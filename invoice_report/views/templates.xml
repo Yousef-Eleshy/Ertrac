@@ -8,18 +8,19 @@
                     direction: rtl;
                 }
             </style>
-            <h3 align='center'>sekak 7adeed masr - 3omom handsa elseka</h3>
+            <h3 align='center'>سكك حديد مصر - عموم هندسة السكة</h3>
             <div class="row">
             <div class="col-4">
-            <strong style='display:block'>mabl8 w e3tmad .....................</strong>
-            <strong style='display:block'>rakm w tare5 ele3tmad ..................</strong>
-            <strong style='display:block'>qemat el3a2d .......................</strong>
+                <pre>بيان مرفق بفاتورة رقم     \      </pre>
+                <p t-field='o.contract'></p>
             </div>
             <p class="col-4"></p>
             <div class="col-4">
-                <p>byan fatora/</p>
-                <p>tebqan lel3aqd rakam (  ) lesanat </p>
+            <strong style='display:block'>مبلغ الاعتماد .....................</strong>
+            <strong style='display:block'>رقم و تاريخ الاعتماد ..................</strong>
+            <strong style='display:block'>قيمة العقد .......................</strong>
             </div>
+
             </div>
             <p t-field='o.narration'></p>
             </div>
@@ -67,25 +68,25 @@
                 <div class="col-4">
                 </div>
                 <div class="col-4">
-                    <stong>all works</stong>
+                    <stong>جميع الاعمال تمت طبقا للاصول الفنية للهيئة</stong>
                 </div>
                 <div class="col-4">
                 </div>
             </div>
             <div class="row"  style='margin-bottom:60px'>
                 <div class="col-4">
-                    <stong>company agent</stong>
+                    <stong>مندوب الشركة</stong>
                 </div>
                 <div class="col-4">
                 </div>
                 <div class="col-4">
-                    <stong>organization agent</stong>
+                    <stong>مندوب الهيئة</stong>
                 </div>
             </div>
             <div align='center'>
-                <p>ya3tmd/ </p>
-                <p>CEO</p>
-                <p>engieer/</p>
+                <p>يعتمد/ </p>
+                <p>رئيس مجلس الادارة و العضو المنتدب</p>
+                <p>مهندس/</p>
             </div>
         </xpath>
 
@@ -102,9 +103,9 @@
 
         <xpath expr="//t/div[@class='page']/table[@name='invoice_line_table']" position="replace">
         <div class="row" style='margin:0'>
-            <p class="col-4" style='font-size:10px'> handsa 207</p>
+            <p class="col-4" style='font-size:10px'> هندسة 207</p>
             <p class="col-4" style='font-size:10px'></p>
-            <p class="col-4" style='font-size:10px'>matab3 seka 7aded</p>
+            <p class="col-4" style='font-size:10px'>مطابع السكك الحديد</p>
         </div>
         <table class="table table-sm o_main_table table-bordered" name="invoice_line_table">
                <thead>
@@ -115,33 +116,33 @@
                     }
                 </style>
                     <t t-set="colspan" t-value="6"/>
-                    <th>internal refernce</th> 
-                    <th>product name</th> 
-                    <th>Unit</th> 
-                    <th>quantity</th>
+                    <th>رقم بند العقد</th> 
+                    <th>بيانات مفردات الاعمال</th> 
+                    <th>الوحدة</th> 
+                    <th>الكمية</th>
                     <th>
-                        <p style="margin:0;border-bottom: 1px solid black;" align='center'>unit price</p>
+                        <p style="margin:0;border-bottom: 1px solid black;" align='center'>الثمن بالوحدة</p>
                         <p class="row money" style="margin:0">
-                            <span class="col-auto sm" style="border-right:1px solid black; padding:1px;">pounds</span>
-                            <span class="col-auto sm" style='padding:1px'>cents</span>
+                            <span class="col-auto sm" style="border-left:1px solid black; padding:1px;">جنية</span>
+                            <span class="col-auto sm" style='padding:1px'>قرش</span>
                         </p>
                     </th>  
-                    <th>rate</th>
+                    <th>النسبة</th>
                     <th>                        
-                        <p style="margin:0;border-bottom: 1px solid black;" align='center'>subtotal</p>
+                        <p style="margin:0;border-bottom: 1px solid black;" align='center'>تكاليف كل بند</p>
                         <p class="row money" style="margin:0">
-                            <span class="col-auto sm" style="border-right:1px solid black; padding:1px;">pounds</span>
-                            <span class="col-auto sm" style='padding:1px'>cents</span>
+                            <span class="col-auto sm" style="border-left:1px solid black; padding:1px;">جنية</span>
+                            <span class="col-auto sm" style='padding:1px'>قرش</span>
                         </p>
                     </th> 
                     <th>
-                       <p style="margin:0;border-bottom: 1px solid black;" align='center'>allowed amount</p>
+                       <p style="margin:0;border-bottom: 1px solid black;" align='center'>المبلغ المصرح بصرفه</p>
                         <p class="row money" style="margin:0">
-                            <span class="col-auto sm" style="border-right:1px solid black; padding:1px;">pounds</span>
-                            <span class="col-auto sm" style='padding:1px'>cents</span>
+                            <span class="col-auto sm" style="border-left:1px solid black; padding:1px;">جنية</span>
+                            <span class="col-auto sm" style='padding:1px'>قرش</span>
                         </p>
                     </th>
-                    <th>notes</th>
+                    <th>ملاحظات</th>
                 </tr>
                </thead> 
                <tbody>
@@ -154,7 +155,7 @@
                             <span t-field='line.product_id.name'/>
                         </td>
                         <td>
-                            <span>KM</span>
+                            <span>كم</span>
                         </td>
                         <td>
                             <span t-field='line.quantity'/>
@@ -168,8 +169,12 @@
                         <td>
                             <span t-field='line.price_subtotal'/>
                         </td>
-                        <td></td>
-                        <td></td>
+                        <td>
+                            <span t-field='line.allowed_amount'/>
+                        </td>
+                        <td>
+                            <span t-field='line.disc'/>
+                        </td>
                     </tr>
                 </t>
                </tbody>
