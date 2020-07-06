@@ -61,7 +61,7 @@ class TaskErtrackXlsx(models.AbstractModel):
             if task.task_header_id:
                 percentages = task.task_header_id.line_ids.mapped('percent')
                 last_col = col + len(percentages)
-                last_col = 17
+#                 last_col = 17
                 # Total Col
                 worksheet.merge_range(row, last_col, row + 1, last_col, ' النسب  السابقة المنصرفة',
                                       cell_format_header)
@@ -74,17 +74,37 @@ class TaskErtrackXlsx(models.AbstractModel):
                                       'النسب المئويه لبنود الأعمال طبقا" للعقد رقم 1 لسنة 2018/2017 للتجديد بأحواش المحطات'
                                       , cell_format_header)
                 row += 1
-                worksheet.merge_range(row, col ,row ,last_col,'')
-                for y, line in enumerate(task.task_header_id.line_ids):
-                    worksheet.write(row, col+y, "%s %s%s" % (line.name, line.percent, "%")
-                                    , cell_format_header)
+                #                 worksheet.merge_range(row, col ,row ,last_col,'')
+
+                if len(percentages) == 11:
+                    for y, line in enumerate(task.task_header_id.line_ids):
+                          worksheet.write(row, col+y, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header)
+                elif len(percentages) == 10:
+                    for y, line in enumerate(task.task_header_id.line_ids):
+                        if y == 1:
+                            worksheet.merge_range(row, col+y, row, col+1+y, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header)
+                            
+                        worksheet.write(row, col+y, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header)
+                elif len(percentages) == 8:
+                    for y, line in enumerate(task.task_header_id.line_ids):
+                        if y == 1 or y==2 or y==3 :
+                            col += 1
+                            worksheet.merge_range(row, col+y, row, col+1+y, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header)
+                            
+                        worksheet.write(row, col+y, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header)
+                    
                 row += 1
                 # Main Task Name Line
                 worksheet.write(row, 0, idx+1, cell_format_header)
                 worksheet.write(row, 1, task.name, cell_format_header)
                 worksheet.merge_range(row, 2, row, col + len(percentages) + 2,
                                       ' ', cell_format_header)
-                worksheet.merge_range(row, col ,row ,last_col,'', cell_format_header)
+#                 worksheet.merge_range(row, col ,row ,last_col,'', cell_format_header)
 
                 # Sub Tasks Lines
                 for idxx, child_task in enumerate(task.child_ids):
@@ -111,7 +131,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                     col += 1
                     worksheet.write(row, last_col+2, "%s%s" % (task.task_header_id.total, "%"),
                                     cell_format_row)
-                    worksheet.merge_range(row, col ,row ,last_col,'', cell_format_row)
+#                     worksheet.merge_range(row, col ,row ,last_col,'', cell_format_row)
             else:
                 raise Warning(_("Task Header Is missing"))
             # Final Total
@@ -124,7 +144,7 @@ class TaskErtrackXlsx(models.AbstractModel):
             worksheet.write(row, col, 'كم', cell_format_row)
             col += 1
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
-            worksheet.merge_range(row, col ,row ,last_col,'', cell_format_row)
+#             worksheet.merge_range(row, col ,row ,last_col,'', cell_format_row)
             row += 1
         # Footer
         row += 2
