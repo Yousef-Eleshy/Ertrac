@@ -41,8 +41,10 @@ class TaskErtrackXlsx(models.AbstractModel):
         worksheet.merge_range(10, 2, 10, 6, "بقسم هندسة    التابع لإدارة هندسة   :")
         cell_format_header = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
                                                   'border': 1, 'fg_color': '#faf200'})
+        cell_format_header.set_font_size(7)
         cell_format_row = workbook.add_format({'bold': False, 'align': 'center', 'valign': 'vcenter',
                                                'border': 1})
+        cell_format_row.set_font_size(7)
         cell_format_header.set_center_across()
         row = 6
 
@@ -109,7 +111,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                     col += 1
                     worksheet.write(row, last_col+2, "%s%s" % (task.task_header_id.total, "%"),
                                     cell_format_row)
-                    worksheet.merge_range(row, col ,row ,last_col,'', cell_format_header)
+                    worksheet.merge_range(row, col ,row ,last_col,'', cell_format_row)
             else:
                 raise Warning(_("Task Header Is missing"))
             # Final Total
@@ -122,7 +124,7 @@ class TaskErtrackXlsx(models.AbstractModel):
             worksheet.write(row, col, 'كم', cell_format_row)
             col += 1
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
-            worksheet.merge_range(row, col ,row ,last_col,'', cell_format_header)
+            worksheet.merge_range(row, col ,row ,last_col,'', cell_format_row)
             row += 1
         # Footer
         row += 2
