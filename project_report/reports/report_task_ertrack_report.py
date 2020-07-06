@@ -107,6 +107,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                     col += 1
                     worksheet.write(row, col, "%s%s" % (task.task_header_id.total, "%"),
                                     cell_format_row)
+                    worksheet.merge_range(row, col ,row ,last_col,'')
             else:
                 raise Warning(_("Task Header Is missing"))
             # Final Total
