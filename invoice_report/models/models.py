@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
-from datetime import datetime
 
 
 
@@ -12,6 +11,9 @@ class ProjectTask(models.Model):
 
     planned_hours = fields.Float(string='Quantity')
 
+    rate_tasks = fields.Float(string = 'Rate Percentage')
+
+
 class AccountAnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
 
@@ -19,29 +21,55 @@ class AccountAnalyticLine(models.Model):
     region = fields.Char(string='Region')
     employee_id = fields.Many2one('hr.employee', "Employee", check_company=True)
     unit_amount = fields.Float(string='Quantity')
+    parent_id = fields.Many2one('project.task', string='Parent Task')
+    child_id = fields.Many2one('project.task', string='Child Task')
+
+    @api.model
+    def create(self, vals):
+        if vals.get('task_id'):
+            task = self.env['project.task'].search([('id','=',vals.get('task_id'))])
+            if task.parent_id:
+                vals['child_id'] = task.id
+            else:
+                vals['parent_id'] = task.parent_id.id
+        return super(AccountAnalyticLine, self).create(vals)
+
+    def write(self, vals):
+        if vals.get('task_id'):
+            task = self.env['project.task'].search([('id','=',vals.get('task_id'))])
+            if task.parent_id:
+                vals['child_id'] = task.id
+            else:
+                vals['parent_id'] = task.parent_id.id
+        return super(AccountAnalyticLine, self).write(vals)
 
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     #solved_qty = fields.Float(string ='Solved Qty',store=True)
-    rated = fields.Float(string = 'Rate',store = True , compute = '_compute_rate_value')
+    rated = fields.Float(string = 'Rate',store = True)
 
-    @api.depends('qty_delivered','product_uom_qty')
-    def _compute_rate_value(self):
+
+    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id','rated')
+    def _compute_amount(self):
+        """
+        Compute the amounts of the SO line.
+        """
         for line in self:
-            if line.product_uom_qty == 0 :
-                line.rated = 0
+            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            taxes = line.tax_id.compute_all(price, line.order_id.currency_id, line.product_uom_qty, product=line.product_id, partner=line.order_id.partner_shipping_id)
+            if line.rated !=0 and line.invoice_status == 'to invoice':
+                line.update({
+                    'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
+                    'price_total': taxes['total_included']*line.rated,
+                    'price_subtotal': taxes['total_excluded']*line.rated,
+                })
             else:
-                line.rated = (line.qty_delivered*100)/line.product_uom_qty
-
-
-    @api.onchange('qty_delivered')
-    def _on_change_rate_value(self):
-        for line in self:
-            if line.product_uom_qty == 0 :
-                line.rated = 0
-            else:
-                line.rated = (line.qty_delivered*100)/line.product_uom_qty
+                line.update({
+                    'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
+                    'price_total': taxes['total_included']*line.rated,
+                    'price_subtotal': taxes['total_excluded']*line.rated,
+                })
 
 
     def _prepare_invoice_line(self):
@@ -49,7 +77,6 @@ class SaleOrderLine(models.Model):
         Prepare the dict of values to create the new invoice line for a sales order line.
 
         :param qty: float quantity to invoice
-        report_invoice_document
         """
         self.ensure_one()
         return {
@@ -70,31 +97,21 @@ class SaleOrderLine(models.Model):
 
 
 
-#    @api.depends('analytic_line_ids.project_id')
-#    def _compute_qty_delivered(self):
-#        super(SaleOrderLine, self)._compute_qty_delivered()
-
-#        lines_by_timesheet = self.filtered(lambda sol: sol.qty_delivered_method == 'timesheet')
-#        domain = lines_by_timesheet._timesheet_compute_delivered_quantity_domain()
-#        mapping = lines_by_timesheet.sudo()._get_delivered_quantity_by_analytic(domain)
-#        for line in lines_by_timesheet:
-#            line.qty_delivered = line.planned_hours
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
     rated = fields.Float(string = 'Rate',store = True)
+    rated_once_boolean = fields.Boolean(string='Rated Bool',store=True,default=False)
+    allowed_amount = fields.Monetary(string='المبلغ المصرح بصرفه',store=True)
+    disc = fields.Char(string='الملاحظات',store=True)
 
-# class AccountMove(models.Model):
-#     _inherit = 'account.move'
-
-#     short_date = fields.Char(compute='month_year',store = True)
-
-#     @api.depends('invoice_date')
-#     def month_year(self):
-#         short_date_val = ''
-#         if self.invoice_date:
-#             month_name = self.invoice_date.strftime("%b")
-#             year = self.invoice_date.year
-#             short_date_val = f'{month_name} {year}'
-#         self.short_date = short_date_val
+    @api.model
+    def _get_price_total_and_subtotal_model(self, price_unit, quantity, discount, currency, product, partner, taxes, move_type):
+        res = super(AccountMoveLine, self)._get_price_total_and_subtotal_model(price_unit, quantity, discount, currency, product, partner, taxes, move_type)
+        for line in self:
+            if line.rated !=0 and line.rated_once_boolean == False:
+                line.rated_once_boolean = True
+                res['price_subtotal']= res['price_subtotal'] * line.rated
+                #res['price_total'] = res['price_total'] * line.rated
+        return res
