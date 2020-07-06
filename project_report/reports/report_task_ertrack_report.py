@@ -91,11 +91,10 @@ class TaskErtrackXlsx(models.AbstractModel):
                 elif len(percentages) == 8:
                     for y, line in enumerate(task.task_header_id.line_ids):
                         if y == 1 or y==2 or y==3 :
-                            col += 1
                             worksheet.merge_range(row, col+y, row, col+1+y, "%s %s%s" % (line.name, line.percent, "%")
                                           , cell_format_header)
                             
-                        worksheet.write(row, col+y, "%s %s%s" % (line.name, line.percent, "%")
+                        worksheet.write(row, col+1+y, "%s %s%s" % (line.name, line.percent, "%")
                                           , cell_format_header)
                     
                 row += 1
