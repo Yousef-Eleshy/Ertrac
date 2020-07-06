@@ -101,13 +101,13 @@ class TaskErtrackXlsx(models.AbstractModel):
                         col += 1
                         # Total Col
 
-                    worksheet.write(row, col, "%s%s" % (task.task_header_id.previous, "%"),
+                    worksheet.write(row, last_col, "%s%s" % (task.task_header_id.previous, "%"),
                                     cell_format_row)
                     col += 1
-                    worksheet.write(row, col, "%s%s" % (task.task_header_id.new, "%"),
+                    worksheet.write(row, last_col+1, "%s%s" % (task.task_header_id.new, "%"),
                                     cell_format_row)
                     col += 1
-                    worksheet.write(row, col, "%s%s" % (task.task_header_id.total, "%"),
+                    worksheet.write(row, last_col+2, "%s%s" % (task.task_header_id.total, "%"),
                                     cell_format_row)
                     worksheet.merge_range(row, col ,row ,last_col,'')
             else:
