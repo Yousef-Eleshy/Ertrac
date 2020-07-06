@@ -38,7 +38,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         worksheet.write(8, 0, "-2")
         worksheet.merge_range(8, 1, 8, 2, "السيد المهندس/ ")
         worksheet.merge_range(8, 3, 8, 4, "هندسة منطقة")
-        worksheet.write(8, 0, "-3")
+        worksheet.write(9, 0, "-3")
         worksheet.merge_range(9, 1, 9, 2, " السيــد/")
         worksheet.merge_range(9, 3, 9, 4, "مندوب الشركة المصرية")
         worksheet.merge_range(10, 1, 10, 6, "وبالمرور والمعاينة على الطبيعة تبين ان الشركة قامت بأعمال الصيانة الميكانيكية ما بين    بالخطين الطالع والنازل ", bold_center)
@@ -138,12 +138,13 @@ class TaskErtracXlsxs(models.AbstractModel):
         col += 1
         worksheet.write(row, col, sum(c.total_km for c in tasks_total), cell_format_total2)
         #line total
-        worksheet.merge_range(row, 4, row , 8, "بإجمالي مسافة طالع , نازل = %s  كم" % sum(c.total_km for c in tasks_total) , bold_center)
+        row += 1
+        worksheet.merge_range(row, 1, row , 5, "بإجمالي مسافة طالع , نازل = %s  كم" % sum(c.total_km for c in tasks_total) , bold_center)
         # Lines user will write in
         row += 4
         # Footer
         row += 2
-        worksheet.merge_range(row, 2, row, 6, "جميع الأعمال تمت طبقا للأصول الفنية للهيئة وبحالة جيدة", bold_center)
+        worksheet.merge_range(row, 1, row, 5, "جميع الأعمال تمت طبقا للأصول الفنية للهيئة وبحالة جيدة", bold_center)
         row += 1
         worksheet.merge_range(row, 3, row, 5, "وتحرر هذا المحضر منا بذلك", bold_center)
         row += 1
