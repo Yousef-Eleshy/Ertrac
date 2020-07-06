@@ -23,8 +23,8 @@ class TaskErtrackXlsx(models.AbstractModel):
 
         worksheet.right_to_left()
         worksheet.set_column('A:A', 5)
-        worksheet.set_column('B:B', 50)
-        worksheet.set_column('C:X', 20)
+        worksheet.set_column('B:B', 20)
+        worksheet.set_column('C:X', 10)
         bold = workbook.add_format({'bold': True})
         bold_center = workbook.add_format({'bold': True, 'align': 'center'})
         bold_right = workbook.add_format({'bold': True, 'align': 'right'})
