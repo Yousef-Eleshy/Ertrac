@@ -7,8 +7,5 @@ class AcountMove(models.Model):
 
     contract = fields.Char(string='العقد')
 
-class IvoiceLine(models.Model):
-    _inherit = 'account.move.line'
 
-    allowed_amount = fields.Monetary(string='المبلغ المصرح بصرفه',store=True)
-    disc = fields.Char(string='الملاحظات',store=True)
+
