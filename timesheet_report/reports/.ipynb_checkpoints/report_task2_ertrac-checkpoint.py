@@ -143,9 +143,9 @@ class TaskErtracXlsxs(models.AbstractModel):
         row += 4
         # Footer
         row += 2
-        worksheet.write(row, 2, row, 6, "جميع الأعمال تمت طبقا للأصول الفنية للهيئة وبحالة جيدة", bold_center)
+        worksheet.merge_range(row, 2, row, 6, "جميع الأعمال تمت طبقا للأصول الفنية للهيئة وبحالة جيدة", bold_center)
         row += 1
-        worksheet.write(row, 3, row, 5, "وتحرر هذا المحضر منا بذلك", bold_center)
+        worksheet.merge_range(row, 3, row, 5, "وتحرر هذا المحضر منا بذلك", bold_center)
         row += 1
         worksheet.write(row, 1, "مندوب الشركه", bold_center)
         row += 1
