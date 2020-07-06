@@ -107,6 +107,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                     col += 1
                     worksheet.write(row, col, "%s%s" % (task.task_header_id.total, "%"),
                                     cell_format_row)
+                    worksheet.merge_range(row, col ,row ,last_col,'')
             else:
                 raise Warning(_("Task Header Is missing"))
             # Final Total
@@ -119,7 +120,7 @@ class TaskErtrackXlsx(models.AbstractModel):
             worksheet.write(row, col, 'كم', cell_format_row)
             col += 1
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
-            #worksheet.merge_range(row, col ,row ,last_col,'')
+            worksheet.merge_range(row, col ,row ,last_col,'')
             row += 1
         # Footer
         row += 2
