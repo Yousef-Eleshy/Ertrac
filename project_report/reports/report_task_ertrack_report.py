@@ -119,7 +119,7 @@ class TaskErtrackXlsx(models.AbstractModel):
             worksheet.write(row, col, 'كم', cell_format_row)
             col += 1
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
-            worksheet.merge_range(row, col ,row ,last_col)
+            worksheet.merge_range(row, col ,row ,last_col,'')
             row += 1
         # Footer
         row += 2
