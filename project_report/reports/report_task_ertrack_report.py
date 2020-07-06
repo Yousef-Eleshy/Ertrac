@@ -82,7 +82,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                 worksheet.write(row, 1, task.name, cell_format_header)
                 worksheet.merge_range(row, 2, row, col + len(percentages) + 2,
                                       ' ', cell_format_header)
-                worksheet.merge_range(row, col ,row ,last_col,'')
+                worksheet.merge_range(row, col ,row ,last_col,'', cell_format_header)
 
                 # Sub Tasks Lines
                 for idxx, child_task in enumerate(task.child_ids):
@@ -109,7 +109,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                     col += 1
                     worksheet.write(row, last_col+2, "%s%s" % (task.task_header_id.total, "%"),
                                     cell_format_row)
-                    worksheet.merge_range(row, col ,row ,last_col,'')
+                    worksheet.merge_range(row, col ,row ,last_col,'', cell_format_header)
             else:
                 raise Warning(_("Task Header Is missing"))
             # Final Total
@@ -122,7 +122,7 @@ class TaskErtrackXlsx(models.AbstractModel):
             worksheet.write(row, col, 'كم', cell_format_row)
             col += 1
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
-            worksheet.merge_range(row, col ,row ,last_col,'')
+            worksheet.merge_range(row, col ,row ,last_col,'', cell_format_header)
             row += 1
         # Footer
         row += 2
