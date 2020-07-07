@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <report
+                id="first_task_ertrack_report"
+                model="hr.employee"
+                string=" تقرير حصر الموظفين "
+                report_type="xlsx"
+                name="etrac_report_xlsx.firstreport"
+                file="etrac_report_xlsx.firstreport"
+                attachment_use="False"
+        />
+</odoo>
