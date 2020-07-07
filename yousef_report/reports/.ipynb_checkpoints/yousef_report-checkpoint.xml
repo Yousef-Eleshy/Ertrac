@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <report
+                id="yousef_report"
+                model="sale.order"
+                string="Yousef Report"
+                report_type="xlsx"
+                name="report.yousef_report.yreport"
+                file="report.yousef_report.yreport"
+                attachment_use="False"
+                menu="True"
+        />
+    </data>
+</odoo>
