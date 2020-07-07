@@ -7,8 +7,8 @@
                 model="sale.order"
                 string="Yousef Report"
                 report_type="xlsx"
-                name="report.yousef_report.yreport"
-                file="report.yousef_report.yreport"
+                name="yousef_report.yreport"
+                file="yousef_report.yreport"
                 attachment_use="False"
                 menu="True"
         />
