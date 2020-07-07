@@ -3,6 +3,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import Warning
 
 
+# Ahmed Salama Code Start ---->
 
 
 class TaskErtrackXlsx(models.AbstractModel):
@@ -10,7 +11,7 @@ class TaskErtrackXlsx(models.AbstractModel):
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, parent_tasks):
-        report_name = "محضر حصر أعمال"
+        report_name = "محضر الحصر"
         # One sheet by partner
         worksheet = workbook.add_worksheet(report_name[:31])
         format_left_to_right = workbook.add_format()
@@ -23,29 +24,32 @@ class TaskErtrackXlsx(models.AbstractModel):
 
         worksheet.right_to_left()
         worksheet.set_column('A:A', 5)
-        worksheet.set_column('B:B', 20)
+        worksheet.set_column('B:B', 50)
         worksheet.set_column('C:X', 10)
         bold = workbook.add_format({'bold': True})
         bold_center = workbook.add_format({'bold': True, 'align': 'center'})
         bold_right = workbook.add_format({'bold': True, 'align': 'right'})
-        worksheet.merge_range(3, 1, 3, 3, "محضر حصر أعمال", bold)
-        worksheet.merge_range(4, 1, 4, 5, "الأعمال التي قامت بتنفيذها الشركة المصرية لتجديد و صيانة خطوط السكك الحديدية", bold)
-        worksheet.merge_range(5, 1, 5, 8, "أعمال الصيانة الميكانيكية ما بين        بالخط الطالع والنازل      التابع لإدارة هندسة    خلال شهر   ")
-        worksheet.merge_range(6, 1, 6, 2, "اليوم %s" % fields.Date.today(), bold)
-        worksheet.merge_range(6, 5, 6, 6, "إجتمعنا نحن كلا من :")
-        worksheet.merge_range(7, 1, 7, 2, "1-السيد المهندس/")
-        worksheet.merge_range(7, 5, 7, 8, "رئيس قسم صيانة هندسة السكة ببني سويف")
-        worksheet.merge_range(8, 1, 8, 2, "1-السيــد/")
-        worksheet.merge_range(8, 5, 8, 8, "مندوب الشركة المصرية")
-        worksheet.merge_range(9, 2, 9, 10, "وبالمرور والمعاينة على الطبيعة تبين ان الشركة قامت بأعمال الصيانة الميكانيكية ما بين    بالخطين الطالع والنازل ")
-        worksheet.merge_range(10, 2, 10, 6, "بقسم هندسة    التابع لإدارة هندسة   :")
+        worksheet.merge_range(1, 6, 1, 8, self.env.user.company_id.name)
+        worksheet.merge_range(2, 4, 2, 8, self.env.user.street)
+        worksheet.merge_range(3, 1, 3, 3, "%s محضر الحصر بتاريخ" % fields.Date.today(), bold)
         cell_format_header = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
                                                   'border': 1, 'fg_color': '#faf200'})
-        cell_format_header.set_font_size(7)
+        cell_format_header_wrap = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
+                                                  'border': 1, 'fg_color': '#faf200'})
+        cell_format_header_wrap.set_text_wrap()
         cell_format_row = workbook.add_format({'bold': False, 'align': 'center', 'valign': 'vcenter',
                                                'border': 1})
-        cell_format_row.set_font_size(7)
+        cell_format_row_wrap = workbook.add_format({'bold': False, 'align': 'center', 'valign': 'vcenter',
+                                               'border': 1})
+        cell_format_row_wrap.set_text_wrap()
+        
         cell_format_header.set_center_across()
+        cell_format_header.set_font_size(7)
+        cell_format_row.set_font_size(7)
+        
+        cell_format_header_wrap.set_center_across()
+        cell_format_header_wrap.set_font_size(7)
+        cell_format_row_wrap.set_font_size(7)
         row = 6
 
         for idx, task in enumerate(parent_tasks):
@@ -61,49 +65,83 @@ class TaskErtrackXlsx(models.AbstractModel):
             if task.task_header_id:
                 percentages = task.task_header_id.line_ids.mapped('percent')
                 last_col = col + len(percentages)
-#                 last_col = 17
+                last_col = 15
                 # Total Col
                 worksheet.merge_range(row, last_col, row + 1, last_col, ' النسب  السابقة المنصرفة',
-                                      cell_format_header)
+                                      cell_format_header_wrap)
                 worksheet.merge_range(row, last_col+1, row + 1, last_col+1, 'النسب المستجدة',
-                                      cell_format_header)
+                                      cell_format_header_wrap)
                 worksheet.merge_range(row, last_col+2, row + 1, last_col+2, 'إجمالى النسبة المستحقة الصرف',
-                                      cell_format_header)
+                                      cell_format_header_wrap)
                 # Headers Part
-                worksheet.merge_range(row, col, row, col + len(percentages) - 1,
+                worksheet.merge_range(row, col, row, last_col - 1,
                                       'النسب المئويه لبنود الأعمال طبقا" للعقد رقم 1 لسنة 2018/2017 للتجديد بأحواش المحطات'
                                       , cell_format_header)
                 row += 1
-                #                 worksheet.merge_range(row, col ,row ,last_col,'')
-
+#                 for y, line in enumerate(task.task_header_id.line_ids):
+#                     worksheet.write(row, col+y, "%s %s%s" % (line.name, line.percent, "%")
+#                                     , cell_format_header)
+                
                 if len(percentages) == 11:
                     for y, line in enumerate(task.task_header_id.line_ids):
                           worksheet.write(row, col+y, "%s %s%s" % (line.name, line.percent, "%")
-                                          , cell_format_header)
+                                          , cell_format_header_wrap)
                 elif len(percentages) == 10:
                     for y, line in enumerate(task.task_header_id.line_ids):
-                        if y == 1:
-                            worksheet.merge_range(row, col+y, row, col+1+y, "%s %s%s" % (line.name, line.percent, "%")
-                                          , cell_format_header)
-                            
-                        worksheet.write(row, col+y, "%s %s%s" % (line.name, line.percent, "%")
-                                          , cell_format_header)
+                        if y == 9:
+#                             worksheet.merge_range(1,y+col,1,y+col+1,'y= %s  col = %s   line = %s' % (y,col,line.name))
+                            worksheet.merge_range(row, col+y, row, col+y+1, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header_wrap)
+                            break
+                        else:
+#                             worksheet.write(0,0,'y= %s  col = %s   line = %s' % (y,col,line.name))
+                            worksheet.write(row, col+y, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header_wrap)
                 elif len(percentages) == 8:
-                    for y, line in enumerate(task.task_header_id.line_ids):
-                        if y == 1 or y==2 or y==3 :
-                            worksheet.merge_range(row, col+y, row, col+1+y, "%s %s%s" % (line.name, line.percent, "%")
-                                          , cell_format_header)
+                    wrap = 0
+                    for y, line in enumerate(task.task_header_id.line_ids): 
+                        if y == 5 or y == 6 or y == 7:
+                            worksheet.merge_range(row, col+y+wrap, row, col+y+wrap+1, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header_wrap)
+                            wrap += 1
                             
-                        worksheet.write(row, col+1+y, "%s %s%s" % (line.name, line.percent, "%")
-                                          , cell_format_header)
-                    
+                        else:
+#                             worksheet.write(0,0,'y= %s  col = %s   line = %s' % (y,col,line.name))
+                            worksheet.write(row, col+y, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header_wrap)
+                elif len(percentages) == 6:
+                    wrap = 0
+                    for y, line in enumerate(task.task_header_id.line_ids): 
+                        if y != 5 :
+                            worksheet.merge_range(row, col+y+wrap, row, col+y+wrap+1, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header_wrap)
+                            wrap += 1
+                            
+                        else:
+#                             worksheet.write(0,0,'y= %s  col = %s   line = %s' % (y,col,line.name))
+                            worksheet.write(row, col+y+5, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header_wrap)
+                elif len(percentages) == 4:
+                    wrap = 0
+                    for y, line in enumerate(task.task_header_id.line_ids): 
+                        worksheet.merge_range(row, col+y+wrap, row, col+y+wrap+1, "%s %s%s" % (line.name, line.percent, "%")
+                                          , cell_format_header_wrap)
+                        wrap += 2
+                            
                 row += 1
+#                 elif len(percentages) == 8:
+#                     for y, line in enumerate(task.task_header_id.line_ids):
+#                         if y == 1 or y==2 or y==3 :
+#                             worksheet.merge_range(row, col+y, row, col+1+y, "%s %s%s" % (line.name, line.percent, "%")
+#                                           , cell_format_header)
+                            
+#                         worksheet.write(row, col+1+y, "%s %s%s" % (line.name, line.percent, "%")
+#                                           , cell_format_header)
                 # Main Task Name Line
                 worksheet.write(row, 0, idx+1, cell_format_header)
                 worksheet.write(row, 1, task.name, cell_format_header)
-                worksheet.merge_range(row, 2, row, col + len(percentages) + 2,
+                worksheet.merge_range(row, 2, row, last_col + 2,
                                       ' ', cell_format_header)
-#                 worksheet.merge_range(row, col ,row ,last_col,'', cell_format_header)
 
                 # Sub Tasks Lines
                 for idxx, child_task in enumerate(task.child_ids):
@@ -117,9 +155,41 @@ class TaskErtrackXlsx(models.AbstractModel):
                     col += 1
                     worksheet.write(row, col, child_task.effective_hours, cell_format_row)
                     col += 1
-                    for p, percent in enumerate(percentages):
-                        worksheet.write(row, col, percent, cell_format_row)
-                        col += 1
+                    if len(percentages) == 11: 
+                        for p, percent in enumerate(percentages):
+                            worksheet.write(row, col, percent, cell_format_row)
+                            col += 1
+                        
+                    elif len(percentages) == 10:
+                        for p, percent in enumerate(percentages):
+                            if p == 9:
+                                worksheet.merge_range(row, col, row, col+1, percent, cell_format_row)
+                                col += 1
+                                break
+                            else:
+                              worksheet.write(row, col, percent, cell_format_row)
+                              col += 1
+                    elif len(percentages) == 8:
+                        wrap = 0
+                        for p, percent in enumerate(percentages):
+                            if p == 5 or p == 6 or p == 7 :
+                                worksheet.merge_range(row, col+wrap, row, col+wrap+1, percent, cell_format_row)
+                                col += 1
+                                wrap += 1
+                            else:
+                              worksheet.write(row, col, percent, cell_format_row)
+                              col += 1
+                    elif len(percentages) == 6:
+                        wrap = 0
+                        for p, percent in enumerate(percentages):
+                            if p != 5 :
+                                worksheet.merge_range(row, col+wrap, row, col+wrap+1, percent, cell_format_row)
+                                col += 1
+                                wrap += 1
+                            else:
+                              worksheet.write(row, col+5, percent, cell_format_row)
+                              col += 1
+                        
                         # Total Col
 
                     worksheet.write(row, last_col, "%s%s" % (task.task_header_id.previous, "%"),
@@ -130,7 +200,6 @@ class TaskErtrackXlsx(models.AbstractModel):
                     col += 1
                     worksheet.write(row, last_col+2, "%s%s" % (task.task_header_id.total, "%"),
                                     cell_format_row)
-#                     worksheet.merge_range(row, col ,row ,last_col,'', cell_format_row)
             else:
                 raise Warning(_("Task Header Is missing"))
             # Final Total
@@ -143,12 +212,18 @@ class TaskErtrackXlsx(models.AbstractModel):
             worksheet.write(row, col, 'كم', cell_format_row)
             col += 1
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
-#             worksheet.merge_range(row, col ,row ,last_col,'', cell_format_row)
             row += 1
         # Footer
         row += 2
-        worksheet.write(row, 1, "مندوب الشركه", bold_center)
-        worksheet.merge_range(row-1, 4, row-1, 5, "مندوب الهيئه", bold_center)
+        worksheet.write(row, 1, "مندوب الشركه المنفذ", bold_center)
+        worksheet.merge_range(row+1, 0, row+1, 1, "السيد/ ناصر بشاي عبدالشهيد", bold_center)
+
+        worksheet.merge_range(row, 2, row, 3, "مهندس منطقه سوهاج", bold_center)
+        worksheet.merge_range(row+1, 2, row+1, 3, "م/ رحاب عبدالعال عبدالعزيز", bold_center)
+
+        worksheet.merge_range(row-1, 4, row-1, 5, "ممندوب الهيئه", bold_center)
+        worksheet.merge_range(row, 4, row, 5, "رئيس قسم صيانه السكه سوهاج", bold_center)
+        worksheet.merge_range(row+1, 4, row+1, 5, "م/ مدحت عيد صديق", bold_center)
 
         row += 4
         worksheet.write(row, 1, "يعتمد / ", bold_right)
@@ -156,3 +231,4 @@ class TaskErtrackXlsx(models.AbstractModel):
         worksheet.write(row, 1, "رئيس مجلس الاداره والعضو المنتدب ", bold_right)
         row += 1
         worksheet.write(row, 1, "مهندس / مصطفى عبداللطيف أبوالمكارم ", bold_right)
+        # Ahmed Salama Code End.
