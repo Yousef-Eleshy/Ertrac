@@ -64,25 +64,6 @@
         </xpath>
         
         <xpath expr="//t/div[@class='page']/div[@id='qrcode']" position="after">
-<!--             <div class="row">
-                <div class="col-4">
-                </div>
-                <div class="col-4">
-                    <p style='font-size:12px;font-weight:bold'>جميع الاعمال تمت طبقا للاصول الفنية للهيئة</p>
-                </div>
-                <div class="col-4">
-                </div>
-            </div>
-            <div class="row"  style='margin-bottom:60px'>
-                <div class="col-4">
-                    <stong>مندوب الشركة</stong>
-                </div>
-                <div class="col-4">
-                </div>
-                <div class="col-4">
-                    <stong>مندوب الهيئة</stong>
-                </div>
-            </div> -->
             <table class="table table-sm">
                 <td><stong>مندوب الشركة</stong></td>
                 <td><p style='font-size:12px;font-weight:bold'>جميع الاعمال تمت طبقا للاصول الفنية للهيئة</p></td>
@@ -121,10 +102,10 @@
                     }
                 </style>
                     <t t-set="colspan" t-value="6"/>
-                    <th>رقم بند العقد</th> 
-                    <th>بيانات مفردات الاعمال</th> 
-                    <th>الوحدة</th> 
-                    <th>الكمية</th>
+                    <th align='center'><p style="margin:0;font-size:15px;" align='center'>رقم بند العقد</p></th> 
+                    <th><p style="margin:0;font-size:15px;" align='center'>بيانات مفردات الاعمال</p></th> 
+                    <th><p style="margin:0;font-size:15px;" align='center'>الوحدة</p></th> 
+                    <th><p style="margin:0;font-size:15px;" align='center'>كمية</p></th>
                     <th>
                         <p style="margin:0;border-bottom: 1px solid black;" align='center'>الثمن بالوحدة</p>
                         <p class="row money" style="margin:0">
@@ -132,7 +113,7 @@
                             <span class="col-auto sm" style='padding:1px'>قرش</span>
                         </p>
                     </th>  
-                    <th>النسبة</th>
+                    <th><p style="margin:0;font-size:15px;" align='center'>النسبة</p></th>
                     <th>                        
                         <p style="margin:0;border-bottom: 1px solid black;" align='center'>تكاليف كل بند</p>
                         <p class="row money" style="margin:0">
@@ -147,7 +128,7 @@
                             <span class="col-auto sm" style='padding:1px'>قرش</span>
                         </p>
                     </th>
-                    <th>ملاحظات</th>
+                    <th><p style="margin:0;font-size:15px;" align='center'>الملاحظات</p></th>
                 </tr>
                </thead> 
                <tbody>
