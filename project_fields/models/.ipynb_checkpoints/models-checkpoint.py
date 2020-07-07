@@ -26,3 +26,6 @@ class project_fields(models.Model):
     
     work_type = fields.Selection(
         [('branching', 'Branching'), ('path', 'Path'), ('keys', 'Keys')])
+    
+    
+    description2 = fields.Char(string="Description2")
