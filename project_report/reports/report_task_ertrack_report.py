@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 from odoo.exceptions import Warning
+import io
+import base64
 
 
 # Ahmed Salama Code Start ---->
@@ -29,7 +31,15 @@ class TaskErtrackXlsx(models.AbstractModel):
         bold = workbook.add_format({'bold': True})
         bold_center = workbook.add_format({'bold': True, 'align': 'center'})
         bold_right = workbook.add_format({'bold': True, 'align': 'right'})
-        #worksheet.merge_range(1, 6, 1, 8, self.env.user.company_id.name)
+        
+        # Company Logo
+        company_logo = self.env.user.company_id.logo
+        imgdata = base64.b64decode(company_logo)
+        image = io.BytesIO(imgdata)
+        worksheet.insert_image('D1', 'myimage.png', {'image_data': image,'x_scale': 1.2, 'y_scale': 0.9})
+        
+
+        #worksheet.merge_range(1, 6, 1, 8,'')
         #worksheet.merge_range(2, 4, 2, 8, self.env.user.street)
         worksheet.merge_range(3, 1, 3, 3, "%s محضر الحصر بتاريخ" % fields.Date.today(), bold)
         cell_format_header = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
