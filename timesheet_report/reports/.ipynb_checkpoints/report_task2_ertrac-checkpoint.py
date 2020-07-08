@@ -22,11 +22,11 @@ class TaskErtracXlsxs(models.AbstractModel):
         worksheet.set_column('B:B', 50)
         worksheet.set_column('C:X', 20)
         bold = workbook.add_format({'bold': True})
-        bold.set_font_size(16)
+        bold.set_font_size(14)
         bold_center = workbook.add_format({'bold': True, 'align': 'center'})
-        bold_center.set_font_size(16)
+        bold_center.set_font_size(14)
         bold_right = workbook.add_format({'bold': True, 'align': 'right'})
-        bold_right.set_font_size(16)
+        bold_right.set_font_size(14)
         worksheet.merge_range(3, 1, 3, 4, "محضر حصر أعمال", bold_center)
         worksheet.merge_range(4, 1, 4, 4, "الأعمال التي قامت بتنفيذها الشركة المصرية لتجديد و صيانة خطوط السكك الحديدية", bold_center)
         worksheet.merge_range(5, 1, 5, 4, "أعمال الصيانة الميكانيكية ما بين        بالخط الطالع والنازل      التابع لإدارة هندسة    خلال شهر   ", bold_center)
@@ -180,7 +180,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         row += 6
         # Footer
         row += 2
-        worksheet.merge_range(row, 1, row, 5, "جميع الأعمال تمت طبقا للأصول الفنية للهيئة وبحالة جيدة", bold_center)
+        worksheet.merge_range(row, 0, row, 5, "جميع الأعمال تمت طبقا للأصول الفنية للهيئة وبحالة جيدة", bold_center)
         row += 1
         worksheet.merge_range(row, 1, row, 5, "وتحرر هذا المحضر منا بذلك", bold_center)
         row += 1
