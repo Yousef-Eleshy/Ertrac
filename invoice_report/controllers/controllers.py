@@ -2,20 +2,20 @@
 # from odoo import http
 
 
-# class InvoiceReport(http.Controller):
-#     @http.route('/invoice_report/invoice_report/', auth='public')
+# class ProjectErtrac(http.Controller):
+#     @http.route('/project_ertrac/project_ertrac/', auth='public')
 #     def index(self, **kw):
 #         return "Hello, world"
 
-#     @http.route('/invoice_report/invoice_report/objects/', auth='public')
+#     @http.route('/project_ertrac/project_ertrac/objects/', auth='public')
 #     def list(self, **kw):
-#         return http.request.render('invoice_report.listing', {
-#             'root': '/invoice_report/invoice_report',
-#             'objects': http.request.env['invoice_report.invoice_report'].search([]),
+#         return http.request.render('project_ertrac.listing', {
+#             'root': '/project_ertrac/project_ertrac',
+#             'objects': http.request.env['project_ertrac.project_ertrac'].search([]),
 #         })
 
-#     @http.route('/invoice_report/invoice_report/objects/<model("invoice_report.invoice_report"):obj>/', auth='public')
+#     @http.route('/project_ertrac/project_ertrac/objects/<model("project_ertrac.project_ertrac"):obj>/', auth='public')
 #     def object(self, obj, **kw):
-#         return http.request.render('invoice_report.object', {
+#         return http.request.render('project_ertrac.object', {
 #             'object': obj
 #         })

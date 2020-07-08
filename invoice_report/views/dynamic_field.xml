@@ -7,6 +7,8 @@
         <field name="arch" type="xml">
             <field name="invoice_date" position='after'>
                 <field name="contract" />
+                <field name="current" />
+                <field name="pure_amount"  invisible='1'/>
             </field>    
         </field>
     </record>
