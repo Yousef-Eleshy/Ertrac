@@ -30,6 +30,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         bold_center.set_font_size(14)
         bold_right = workbook.add_format({'bold': True, 'align': 'right'})
         bold_right.set_font_size(14)
+        
         # Company Logo
         company_logo = self.env.user.company_id.logo
         imgdata = base64.b64decode(company_logo)
