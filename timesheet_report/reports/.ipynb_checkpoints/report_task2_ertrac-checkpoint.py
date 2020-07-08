@@ -37,22 +37,22 @@ class TaskErtracXlsxs(models.AbstractModel):
         image = io.BytesIO(imgdata)
         worksheet.insert_image('D1', 'myimage.png', {'image_data': image,'x_scale': 1.2, 'y_scale': 0.9})
         
-        worksheet.merge_range(3, 1, 3, 4, "محضر حصر أعمال", bold_center)
-        worksheet.merge_range(4, 1, 4, 4, "الأعمال التي قامت بتنفيذها الشركة المصرية لتجديد و صيانة خطوط السكك الحديدية", bold_center)
-        worksheet.merge_range(5, 1, 5, 4, "أعمال الصيانة الميكانيكية ما بين        بالخط الطالع والنازل      التابع لإدارة هندسة    خلال شهر   ", bold_center)
-        worksheet.merge_range(6, 1, 6, 2, "اليوم %s" % fields.Date.today(), bold)
-        worksheet.merge_range(6, 3, 6, 4, "إجتمعنا نحن كلا من :")
-        worksheet.write(7, 0, "-1")
-        worksheet.merge_range(7, 1, 7, 2, "السيد المهندس/ ")
-        worksheet.merge_range(7, 3, 7, 4, "رئيس قسم صيانة هندسة السكة")
-        worksheet.write(8, 0, "-2")
+        worksheet.merge_range(4, 1, 4, 4, "محضر حصر أعمال", bold_center)
+        worksheet.merge_range(5, 1, 5, 4, "الأعمال التي قامت بتنفيذها الشركة المصرية لتجديد و صيانة خطوط السكك الحديدية", bold_center)
+        worksheet.merge_range(6, 1, 6, 4, "أعمال الصيانة الميكانيكية ما بين        بالخط الطالع والنازل      التابع لإدارة هندسة    خلال شهر   ", bold_center)
+        worksheet.merge_range(7, 1, 7, 2, "اليوم %s" % fields.Date.today(), bold)
+        worksheet.merge_range(7, 3, 7, 4, "إجتمعنا نحن كلا من :")
+        worksheet.write(8, 0, "-1")
         worksheet.merge_range(8, 1, 8, 2, "السيد المهندس/ ")
-        worksheet.merge_range(8, 3, 8, 4, "هندسة منطقة")
-        worksheet.write(9, 0, "-3")
-        worksheet.merge_range(9, 1, 9, 2, " السيــد/")
-        worksheet.merge_range(9, 3, 9, 4, "مندوب الشركة المصرية")
-        worksheet.merge_range(10, 1, 10, 4, "وبالمرور والمعاينة على الطبيعة تبين ان الشركة قامت بأعمال الصيانة الميكانيكية ما بين    بالخطين الطالع والنازل ", bold_center)
-        worksheet.merge_range(11, 1, 11, 6, "بقسم هندسة    التابع لإدارة هندسة   :")
+        worksheet.merge_range(8, 3, 8, 4, "رئيس قسم صيانة هندسة السكة")
+        worksheet.write(9, 0, "-2")
+        worksheet.merge_range(9, 1, 9, 2, "السيد المهندس/ ")
+        worksheet.merge_range(9, 3, 9, 4, "هندسة منطقة")
+        worksheet.write(10, 0, "-3")
+        worksheet.merge_range(10, 1, 10, 2, " السيــد/")
+        worksheet.merge_range(10, 3, 10, 4, "مندوب الشركة المصرية")
+        worksheet.merge_range(11, 1, 11, 4, "وبالمرور والمعاينة على الطبيعة تبين ان الشركة قامت بأعمال الصيانة الميكانيكية ما بين    بالخطين الطالع والنازل ", bold_center)
+        worksheet.merge_range(12, 1, 12, 6, "بقسم هندسة    التابع لإدارة هندسة   :")
         cell_format_header = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
                                                   'border': 1, 'fg_color': '#faf200'})
         cell_format_row = workbook.add_format({'bold': False, 'align': 'center', 'valign': 'vcenter',
@@ -63,12 +63,12 @@ class TaskErtracXlsxs(models.AbstractModel):
                                                   'border': 1, 'fg_color': '#C6EFCE'})
         cell_format_header.set_center_across()
         
-        worksheet.merge_range(13, 0, 14, 0, '')
-        worksheet.merge_range(13, 1, 14, 1, 'بيان الأعمال', cell_format_header)
-        worksheet.merge_range(13, 2, 14, 2, 'من كم', cell_format_header)
-        worksheet.merge_range(13, 3, 14, 3, 'إلى كم', cell_format_header)
-        worksheet.merge_range(13, 4, 14, 4, 'بطول', cell_format_header)
-        row = 14
+        worksheet.merge_range(14, 0, 15, 0, '')
+        worksheet.merge_range(14, 1, 15, 1, 'بيان الأعمال', cell_format_header)
+        worksheet.merge_range(14, 2, 15, 2, 'من كم', cell_format_header)
+        worksheet.merge_range(14, 3, 15, 3, 'إلى كم', cell_format_header)
+        worksheet.merge_range(14, 4, 15, 4, 'بطول', cell_format_header)
+        row = 15
         tasks_arranged_increase = []
         tasks_arranged_decrease = []
         tasks_arranged_odd = []
