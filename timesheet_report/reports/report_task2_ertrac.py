@@ -41,7 +41,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         worksheet.write(9, 0, "-3")
         worksheet.merge_range(9, 1, 9, 2, " السيــد/")
         worksheet.merge_range(9, 3, 9, 4, "مندوب الشركة المصرية")
-        worksheet.merge_range(10, 1, 10, 6, "وبالمرور والمعاينة على الطبيعة تبين ان الشركة قامت بأعمال الصيانة الميكانيكية ما بين    بالخطين الطالع والنازل ", bold_center)
+        worksheet.merge_range(10, 1, 10, 4, "وبالمرور والمعاينة على الطبيعة تبين ان الشركة قامت بأعمال الصيانة الميكانيكية ما بين    بالخطين الطالع والنازل ", bold_center)
         worksheet.merge_range(11, 1, 11, 6, "بقسم هندسة    التابع لإدارة هندسة   :")
         cell_format_header = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
                                                   'border': 1, 'fg_color': '#faf200'})
@@ -61,6 +61,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         row = 14
         tasks_arranged_increase = []
         tasks_arranged_decrease = []
+        tasks_arranged_odd = []
 
         for idx , task in enumerate(task_ids):
             for idxx , timesheet_ids in enumerate(task.timesheet_ids):
@@ -71,6 +72,11 @@ class TaskErtracXlsxs(models.AbstractModel):
             for idxx , timesheet_ids in enumerate(task.timesheet_ids):
                     if timesheet_ids.line_type == 'decrease_line' :
                           tasks_arranged_decrease.append(timesheet_ids)
+                            
+        for idx , task in enumerate(task_ids):
+            for idxx , timesheet_ids in enumerate(task.timesheet_ids):
+                    if timesheet_ids.line_type == 'odd_line' :
+                          tasks_arranged_odd.append(timesheet_ids)
                                 
         row_initial = row   
         for idxx, timesheet_ids in enumerate(tasks_arranged_increase):
@@ -124,7 +130,33 @@ class TaskErtracXlsxs(models.AbstractModel):
         worksheet.write(row, col, '' ,cell_format_total)
         col += 1
         worksheet.write(row, col, sum(c.total_km for c in tasks_arranged_decrease), cell_format_total)
-        tasks_total = tasks_arranged_decrease + tasks_arranged_increase
+        row_initial = row   
+        for idxx, timesheet_ids in enumerate(tasks_arranged_odd):
+                row += 1
+                col = 0
+                worksheet.write(row, col, '')
+                col += 1
+                #worksheet.write(row, col, 'الخط الطالع', cell_format_row)
+                col += 1
+                worksheet.write(row, col, timesheet_ids.from_km, cell_format_row)
+                col += 1
+                worksheet.write(row, col, timesheet_ids.to_km, cell_format_row)
+                col += 1
+                worksheet.write(row, col, timesheet_ids.total_km, cell_format_row)
+        worksheet.merge_range(row_initial+1, 1, row , 1, 'الخط المفرد',cell_format_row)
+        # Final Total
+        row += 1
+        col = 0
+        worksheet.write(row, col, '')
+        col += 1
+        worksheet.write(row, col, 'إجمالي الخط المفرد', cell_format_total)
+        col += 1
+        worksheet.write(row, col, '' ,cell_format_total)
+        col += 1
+        worksheet.write(row, col, '' ,cell_format_total)
+        col += 1
+        worksheet.write(row, col, sum(c.total_km for c in tasks_arranged_odd), cell_format_total)
+        tasks_total = tasks_arranged_decrease + tasks_arranged_increase + tasks_arranged_odd
         # Final Total
         row += 1
         col = 0
@@ -141,12 +173,12 @@ class TaskErtracXlsxs(models.AbstractModel):
         row += 1
         worksheet.merge_range(row, 1, row , 5, "بإجمالي مسافة طالع , نازل = %s  كم" % sum(c.total_km for c in tasks_total) , bold_center)
         # Lines user will write in
-        row += 4
+        row += 6
         # Footer
         row += 2
         worksheet.merge_range(row, 1, row, 5, "جميع الأعمال تمت طبقا للأصول الفنية للهيئة وبحالة جيدة", bold_center)
         row += 1
-        worksheet.merge_range(row, 3, row, 5, "وتحرر هذا المحضر منا بذلك", bold_center)
+        worksheet.merge_range(row, 1, row, 5, "وتحرر هذا المحضر منا بذلك", bold_center)
         row += 1
         worksheet.write(row, 1, "مندوب الشركه", bold_center)
         row += 1
