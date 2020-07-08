@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
+import io
+import base64
 
 class TaskErtracXlsxs(models.AbstractModel):
     _name = 'report.report_timesheet_ertrac.report_task2_ertrac'
@@ -17,6 +19,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         cell_format_right = workbook.add_format()
         cell_format_right.set_align('right')
 
+        
         worksheet.right_to_left()
         worksheet.set_column('A:A', 5)
         worksheet.set_column('B:B', 50)
@@ -27,6 +30,12 @@ class TaskErtracXlsxs(models.AbstractModel):
         bold_center.set_font_size(14)
         bold_right = workbook.add_format({'bold': True, 'align': 'right'})
         bold_right.set_font_size(14)
+        # Company Logo
+        company_logo = self.env.user.company_id.logo
+        imgdata = base64.b64decode(company_logo)
+        image = io.BytesIO(imgdata)
+        worksheet.insert_image('D1', 'myimage.png', {'image_data': image,'x_scale': 1.2, 'y_scale': 0.9})
+        
         worksheet.merge_range(3, 1, 3, 4, "محضر حصر أعمال", bold_center)
         worksheet.merge_range(4, 1, 4, 4, "الأعمال التي قامت بتنفيذها الشركة المصرية لتجديد و صيانة خطوط السكك الحديدية", bold_center)
         worksheet.merge_range(5, 1, 5, 4, "أعمال الصيانة الميكانيكية ما بين        بالخط الطالع والنازل      التابع لإدارة هندسة    خلال شهر   ", bold_center)
