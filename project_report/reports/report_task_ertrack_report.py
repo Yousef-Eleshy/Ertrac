@@ -39,9 +39,10 @@ class TaskErtrackXlsx(models.AbstractModel):
         worksheet.insert_image('O1', 'myimage.png', {'image_data': image,'x_scale': 1.2, 'y_scale': 0.9})
         
 
-        #worksheet.merge_range(1, 6, 1, 8,'')
-        #worksheet.merge_range(2, 4, 2, 8, self.env.user.street)
-        worksheet.merge_range(3, 1, 3, 3, "%s محضر الحصر بتاريخ" % fields.Date.today(), bold)
+        worksheet.merge_range(3, 6, 3, 7,'محضر حصر أعمال جاري (1)',bold_center)
+        worksheet.merge_range(4, 4, 4, 10, 'الأعمال التي قامت بتنفيذها الشركة المصرية لتجديد وصيانة خطوط السكك الحديدية',bold_center)
+        worksheet.merge_range(5, 3, 5, 11, 'أعمال لتعديلات حوش محطة     بخط       قسم      التابع لإدارة هندسة السكك    شهر    2020',bold_center)
+#         worksheet.merge_range(6, 1, 6, 3, "%s محضر الحصر بتاريخ" % fields.Date.today(), bold)
         cell_format_header = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
                                                   'border': 1, 'fg_color': '#faf200'})
         cell_format_header_wrap = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
@@ -240,6 +241,8 @@ class TaskErtrackXlsx(models.AbstractModel):
             col += 1
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
             row += 1
+        worksheet.merge_range(row, 0, row, 2, " = أعمال شحن ناتج الفج للسكك والمفاتيح بعربات برية ونقلها للمقالب العمومية ", bold_right)
+        worksheet.merge_range(row, 13, row, 15, "طبقا لمحضر حصر الأعمال بالموقع والمرفق صورته", bold_right)
         # Footer
         row += 2
         worksheet.write(row, 1, "مندوب الشركه المنفذ", bold_center)
