@@ -94,7 +94,7 @@ class SaleOrderLine(models.Model):
             'display_type': self.display_type,
             'sequence': self.sequence,
             'name': self.name,
-            'rated': self.rated,
+            'rated': self.rated/100,
             'product_id': self.product_id.id,
             'product_uom_id': self.product_uom.id,
             'quantity': self.qty_to_invoice,
