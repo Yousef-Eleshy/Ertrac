@@ -72,14 +72,14 @@ class SaleOrderLine(models.Model):
             if line.rated !=0 and line.invoice_status == 'to invoice':
                 line.update({
                     'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
-                    'price_total': taxes['total_included']*line.rated,
-                    'price_subtotal': taxes['total_excluded']*line.rated,
+                    'price_total': taxes['total_included']*(line.rated/100),
+                    'price_subtotal': taxes['total_excluded']*(line.rated/100),
                 })
             else:
                 line.update({
                     'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
-                    'price_total': taxes['total_included']*line.rated,
-                    'price_subtotal': taxes['total_excluded']*line.rated,
+                    'price_total': taxes['total_included']*(line.rated/100),
+                    'price_subtotal': taxes['total_excluded']*(line.rated/100),
                 })
 
 
