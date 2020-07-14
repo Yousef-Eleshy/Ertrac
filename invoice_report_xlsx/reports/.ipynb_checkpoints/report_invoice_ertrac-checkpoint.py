@@ -108,7 +108,7 @@ class TaskErtracXlsxs(models.AbstractModel):
                 col += 1
                 worksheet.write(row, col, int(invoice_line_ids.price_unit), cell_format_row_wrap)
                 col += 1
-                worksheet.write(row, col, "%s %" %invoice_line_ids.rated*100, cell_format_row_wrap)
+                worksheet.write(row, col, "%s %s" %(invoice_line_ids.rated*100,'%'), cell_format_row_wrap)
                 col += 1
                 worksheet.write(row, col, int(subtotal_tuple[0]), cell_format_row_wrap)
                 col += 1
@@ -127,8 +127,8 @@ class TaskErtracXlsxs(models.AbstractModel):
                 col += 1
                 row += 1
             row +=1
-            worksheet.mergerange(row, 4, row, 5, "صافي المستخلص",cell_format_row)
-            worksheet.mergerange(row,7, row, 8, invoice.pure_amount ,cell_format_row)
+            worksheet.merge_range(row, 4, row, 5, "صافي المستخلص",cell_format_row)
+            worksheet.merge_range(row,7, row, 8, invoice.pure_amount ,cell_format_row)
 #              worksheet.merge_range(row_initial+1, 1, row , 1, 'الخط الطالع',cell_format_row)
 #              # Final Total
 #              row += 1
