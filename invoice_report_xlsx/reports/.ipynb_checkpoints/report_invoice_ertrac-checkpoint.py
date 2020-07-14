@@ -127,7 +127,8 @@ class TaskErtracXlsxs(models.AbstractModel):
                 col += 1
                 row += 1
             row +=1
-            worksheet.mergerange(row, col, row, col+2, invoice.pure_amount ,cell_format_row)
+            worksheet.mergerange(row, 4, row, 5, "صافي المستخلص",cell_format_row)
+            worksheet.mergerange(row,7, row, 8, invoice.pure_amount ,cell_format_row)
 #              worksheet.merge_range(row_initial+1, 1, row , 1, 'الخط الطالع',cell_format_row)
 #              # Final Total
 #              row += 1
