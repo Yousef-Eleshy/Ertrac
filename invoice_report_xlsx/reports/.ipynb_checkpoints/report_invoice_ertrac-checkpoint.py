@@ -37,14 +37,15 @@ class TaskErtracXlsxs(models.AbstractModel):
         bold_right.set_font_size(12)
         
         # Company Logo
-#         company_logo = self.env.user.company_id.logo
-#         imgdata = base64.b64decode(company_logo)
-#         image = io.BytesIO(imgdata)
-#         worksheet.insert_image('D1', 'myimage.png', {'image_data': image,'x_scale': 1.2, 'y_scale': 0.9})
+        company_logo = self.env.user.company_id.logo
+        imgdata = base64.b64decode(company_logo)
+        image = io.BytesIO(imgdata)
+        worksheet.insert_image('D1', 'myimage.png', {'image_data': image,'x_scale': 1.2, 'y_scale': 0.9})
         
+        worksheet.merge_range(3, 3, 3, 4, " (%s) جاري" % invoice_ids.current, bold_center)
         worksheet.merge_range(4, 1, 4, 6, "سكك حديد مصر - عموم هندسة السكة", bold_center)
         worksheet.merge_range(6, 0, 6, 5, "بيان مرفق بفاتورة رقم       /2020", bold_right)
-        worksheet.merge_range(7, 1, 7, 6, "طبقا للعقد رقم (1) لسنة 2017/2018", bold_right)
+        worksheet.merge_range(7, 1, 7, 6, "%s طبقا " % invoice_ids.contract, bold_right)
         worksheet.merge_range(6, 8, 6, 11, ".................. : مبلغ الإعتماد", bold_right)
         worksheet.merge_range(7, 8, 7, 11, ".................. : رقم وتاريخ الإعتماد", bold_right)
         worksheet.merge_range(8, 8, 8, 11, ".................. : قيمة العقد", bold_right)
@@ -54,7 +55,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         worksheet.merge_range(11, 1, 11, 5, " %s %s هندسة القاهرة خلال شهر" % (fields.Date.today().strftime("%B"),
                                                                                fields.date.today().strftime("%Y")), bold_center)
         worksheet.write(12, 0, "هندسة 207")
-#         worksheet.write(12, 8, "مطابع السكك الحديد 2240//1996/25000")
+        worksheet.write(12, 8, "مطابع السكك الحديد 2240/1996/25000")
         
         cell_format_header = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
                                                   'border': 1, 'fg_color': '#faf200'})
@@ -107,7 +108,7 @@ class TaskErtracXlsxs(models.AbstractModel):
                 col += 1
                 worksheet.write(row, col, int(invoice_line_ids.price_unit), cell_format_row_wrap)
                 col += 1
-                worksheet.write(row, col, invoice_line_ids.rated*100, cell_format_row_wrap)
+                worksheet.write(row, col, "%s %" %invoice_line_ids.rated*100, cell_format_row_wrap)
                 col += 1
                 worksheet.write(row, col, int(subtotal_tuple[0]), cell_format_row_wrap)
                 col += 1
@@ -117,9 +118,17 @@ class TaskErtracXlsxs(models.AbstractModel):
                 col += 1
                 worksheet.write(row, col, int(invoice_line_ids.allowed_amount), cell_format_row_wrap)  
                 col += 1
-                worksheet.write(row, col, invoice_line_ids.disc ,cell_format_row)
+                disc = ''
+                if invoice_line_ids.disc:
+                    disc = ''
+                else:
+                    disc = invoice_line_ids.disc 
+                worksheet.write(row, col, disc ,cell_format_row)
                 col += 1
                 row += 1
+            row +=1
+            worksheet.mergerange(row, 4, row, 5, "صافي المستخلص",cell_format_row)
+            worksheet.mergerange(row,7, row, 8, invoice.pure_amount ,cell_format_row)
 #              worksheet.merge_range(row_initial+1, 1, row , 1, 'الخط الطالع',cell_format_row)
 #              # Final Total
 #              row += 1
