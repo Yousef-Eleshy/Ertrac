@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale','sale_management','account','account_accountant','project','hr_timesheet','sale_timesheet','report_xlsx'],
+    'depends': ['sale','sale_management','account','account_accountant','project','hr_timesheet','sale_timesheet','report_xlsx','invoice_report'],
 
     # always loaded
     'data': [
