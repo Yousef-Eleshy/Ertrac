@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 import io
 import base64
 import math
@@ -40,7 +41,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         company_logo = self.env.user.company_id.logo
         imgdata = base64.b64decode(company_logo)
         image = io.BytesIO(imgdata)
-        worksheet.insert_image('D1', 'myimage.png', {'image_data': image,'x_scale': 1.2, 'y_scale': 0.9})
+        worksheet.insert_image('H1', 'myimage.png', {'image_data': image,'x_scale': 1, 'y_scale': 0.5})
         
         worksheet.merge_range(3, 3, 3, 4, " (%s) جاري" % invoice_ids.current, bold_center)
         worksheet.merge_range(4, 1, 4, 6, "سكك حديد مصر - عموم هندسة السكة", bold_center)
@@ -84,7 +85,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         worksheet.merge_range(14, 7, 14, 8, 'تكاليف كل بند', cell_format_header_wrap)
         worksheet.write(15, 7, 'قرش', cell_format_header_wrap)
         worksheet.write(15, 8, 'جنية', cell_format_header_wrap)
-        worksheet.merge_range(14, 9, 14, 10, 'المبلغ المصرح بصرفه', cell_format_header_wrap)
+        worksheet.merge_range(14, 9, 14, 10, ' المبلغ المصرح بدفعه ', cell_format_header_wrap)
         worksheet.write(15, 9, 'قرش', cell_format_header_wrap)
         worksheet.write(15, 10, 'جنية', cell_format_header_wrap)
         worksheet.merge_range(14, 11, 15, 11, 'ملاحظات', cell_format_header)
@@ -92,9 +93,9 @@ class TaskErtracXlsxs(models.AbstractModel):
 
         for idx , invoice in enumerate(invoice_ids):
             for idxx , invoice_line_ids in enumerate(invoice.invoice_line_ids):
-                unit_tuple = math.modf(invoice_line_ids.price_unit)
-                subtotal_tuple = math.modf(invoice_line_ids.price_subtotal)
-                allowed_tuple = math.modf(invoice_line_ids.allowed_amount)
+                unit_tuple = str(invoice_line_ids.price_unit).split('.')
+                subtotal_tuple = str(invoice_line_ids.price_subtotal).split('.')
+                allowed_tuple = str(invoice_line_ids.allowed_amount).split('.')                
                 col = 0
                 worksheet.write(row, col, invoice_line_ids.product_id.default_code , cell_format_row_wrap)
                 col += 1
@@ -104,30 +105,30 @@ class TaskErtracXlsxs(models.AbstractModel):
                 col += 1
                 worksheet.write(row, col, invoice_line_ids.quantity , cell_format_row_wrap)
                 col += 1
-                worksheet.write(row, col, int(unit_tuple[0]), cell_format_row_wrap)
+                worksheet.write(row, col, int(unit_tuple[1]), cell_format_row_wrap)
                 col += 1
                 worksheet.write(row, col, int(invoice_line_ids.price_unit), cell_format_row_wrap)
                 col += 1
                 worksheet.write(row, col, "%s %s" %(invoice_line_ids.rated*100,'%'), cell_format_row_wrap)
                 col += 1
-                worksheet.write(row, col, int(subtotal_tuple[0]), cell_format_row_wrap)
+                worksheet.write(row, col, int(subtotal_tuple[1]), cell_format_row_wrap)
                 col += 1
                 worksheet.write(row, col, int(invoice_line_ids.price_subtotal), cell_format_row_wrap)
                 col += 1
-                worksheet.write(row, col, int(allowed_tuple[0]), cell_format_row_wrap)  
+                worksheet.write(row, col, int(allowed_tuple[1]), cell_format_row_wrap)  
                 col += 1
                 worksheet.write(row, col, int(invoice_line_ids.allowed_amount), cell_format_row_wrap)  
                 col += 1
                 disc = ''
                 if invoice_line_ids.disc:
-                    disc = ''
-                else:
                     disc = invoice_line_ids.disc 
+                else:
+                    disc = ''
                 worksheet.write(row, col, disc ,cell_format_row)
                 col += 1
                 row += 1
             row +=1
-            worksheet.merge_range(row, 4, row, 5, "صافي المستخلص",cell_format_row)
+            worksheet.merge_range(row, 3, row, 5, "صافي المستخلص",cell_format_row)
             worksheet.merge_range(row,7, row, 8, invoice.pure_amount ,cell_format_row)
 #              worksheet.merge_range(row_initial+1, 1, row , 1, 'الخط الطالع',cell_format_row)
 #              # Final Total
