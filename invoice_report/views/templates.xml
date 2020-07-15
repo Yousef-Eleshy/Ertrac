@@ -110,7 +110,7 @@
                 </style>
                     <t t-set="colspan" t-value="6"/>
                     <th align='center'><p style="margin:0;font-size:15px;" align='center'>رقم بند العقد</p></th> 
-                    <th><p style="margin:0;font-size:15px;width:150px;" align='center'>بيانات مفردات الاعمال</p></th> 
+                    <th><p style="margin:0;font-size:15px;width:200px;" align='center'>بيانات مفردات الاعمال</p></th> 
                     <th><p style="margin:0;font-size:15px;" align='center'>الوحدة</p></th> 
                     <th><p style="margin:0;font-size:15px;" align='center'>كمية</p></th>
                     <th>
@@ -193,8 +193,16 @@
                     <tr>
                     </tr>
                 </t>
+                   <td></td>
+                   <td></td>
+                    <td></td>
+                    <td></td>
                 <td>
-                    <p align='center' style='width:220px;'>صافي المستخلص = <span t-field='o.pure_amount'></span></p>
+                    <p align='center'>صافي المستخلص</p>
+                </td>
+                   <td></td>
+                <td>
+                    <p align='center'><span t-field='o.pure_amount'></span></p>
                 </td>
                </tbody>
         </table>
