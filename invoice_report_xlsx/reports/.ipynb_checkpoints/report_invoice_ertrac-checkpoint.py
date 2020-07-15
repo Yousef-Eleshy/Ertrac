@@ -25,11 +25,11 @@ class TaskErtracXlsxs(models.AbstractModel):
         worksheet.right_to_left()
         worksheet.set_column('A:A', 5)
         worksheet.set_column('E:F', 5)
-        worksheet.set_column('H:K', 5)
+        worksheet.set_column('H:L', 5)
         worksheet.set_column('B:B', 20)
         worksheet.set_column('C:D', 10)
         worksheet.set_column('G:G', 10)
-        worksheet.set_column('L:L', 10)
+        worksheet.set_column('M:M', 10)
         bold = workbook.add_format({'bold': True})
         bold.set_font_size(12)
         bold_center = workbook.add_format({'bold': True, 'align': 'center'})
@@ -42,11 +42,16 @@ class TaskErtracXlsxs(models.AbstractModel):
         imgdata = base64.b64decode(company_logo)
         image = io.BytesIO(imgdata)
         worksheet.insert_image('H1', 'myimage.png', {'image_data': image,'x_scale': 1, 'y_scale': 0.5})
-        
-        worksheet.merge_range(3, 3, 3, 4, " (%s) جاري" % invoice_ids.current, bold_center)
+        current = ''
+        if invoice_ids.current :
+            current = invoice_ids.current
+        contract = ''
+        if invoice_ids.contract :
+            contract = invoice_ids.contract
+        worksheet.merge_range(3, 3, 3, 4, " (%s) جاري" % current, bold_center)
         worksheet.merge_range(4, 1, 4, 6, "سكك حديد مصر - عموم هندسة السكة", bold_center)
         worksheet.merge_range(6, 0, 6, 5, "بيان مرفق بفاتورة رقم       /2020", bold_right)
-        worksheet.merge_range(7, 1, 7, 6, "%s طبقا " % invoice_ids.contract, bold_right)
+        worksheet.merge_range(7, 1, 7, 6, "%s طبقا " % contract, bold_right)
         worksheet.merge_range(6, 8, 6, 11, ".................. : مبلغ الإعتماد", bold_right)
         worksheet.merge_range(7, 8, 7, 11, ".................. : رقم وتاريخ الإعتماد", bold_right)
         worksheet.merge_range(8, 8, 8, 11, ".................. : قيمة العقد", bold_right)
@@ -91,10 +96,10 @@ class TaskErtracXlsxs(models.AbstractModel):
         worksheet.merge_range(14, 7, 14, 8, 'تكاليف كل بند', cell_format_header_wrap)
         worksheet.write(15, 7, 'قرش', cell_format_header_wrap)
         worksheet.write(15, 8, 'جنية', cell_format_header_wrap)
-        worksheet.merge_range(14, 9, 14, 10, ' المبلغ المصرح بدفعه ', cell_format_header_wrap)
+        worksheet.merge_range(14, 9, 14, 11, 'المبلغ المصرح بدفعه', cell_format_header_wrap)
         worksheet.write(15, 9, 'قرش', cell_format_header_wrap)
-        worksheet.write(15, 10, 'جنية', cell_format_header_wrap)
-        worksheet.merge_range(14, 11, 15, 11, 'ملاحظات', cell_format_header)
+        worksheet.merge_range(15, 10, 15, 11, 'جنية', cell_format_header_wrap)
+        worksheet.merge_range(14, 12, 15, 12, 'ملاحظات', cell_format_header)
         row = 16
 
         for idx , invoice in enumerate(invoice_ids):
@@ -113,7 +118,7 @@ class TaskErtracXlsxs(models.AbstractModel):
                 col += 1
                 worksheet.write(row, col, int(unit_tuple[0]*100), cell_format_row_wrap)
                 col += 1
-                worksheet.write(row, col, int(invoice_line_ids.price_unit), cell_format_row_wrap)
+                worksheet.write(row, col, int(unit_tuple[1]), cell_format_row_wrap)
                 col += 1
                 worksheet.write(row, col, "%s %s" %(invoice_line_ids.rated*100,'%'), cell_format_row_wrap)
                 col += 1
@@ -123,7 +128,8 @@ class TaskErtracXlsxs(models.AbstractModel):
                 col += 1
                 worksheet.write(row, col, '', cell_format_row_wrap)  
                 col += 1
-                worksheet.write(row, col, '', cell_format_row_wrap)  
+                worksheet.merge_range(row, col, row , col+1, '', cell_format_row_wrap)
+                col += 1
                 col += 1
                 disc = ''
                 if invoice_line_ids.disc:
