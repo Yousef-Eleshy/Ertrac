@@ -67,13 +67,13 @@
         <xpath expr="//t/div[@class='page']/div[@id='qrcode']" position="after">
             <div class="row" style='border:none;'>
                 <div class='col-4'>
-                  <stong align='right' style='margin-top:20px'>مندوب الشركة</stong>
+                  <p align='right' style='margin-top:20px;'>مندوب الشركة</p>
                 </div>
                 <div class='col-4'>
                     <p style='font-size:12px;font-weight:bold' align='center'>جميع الاعمال تمت طبقا للاصول الفنية للهيئة</p>
                 </div>
                 <div class='col-4'>
-                    <stong style='margin-top:20px;position:relative; right:140px;'>مندوب الهيئة</stong>
+                    <p align='left' style='margin-top:20px;'>مندوب الهيئة</p>
                 </div>
             </div>
             <div align='center'>
@@ -160,6 +160,7 @@
                <tbody>
                 <t t-foreach="o.invoice_line_ids" t-as="line">
                     <t t-set='rate' t-value='round(line.rated * 100)'/>
+                    <t t-set='unit_price' t-value='line.price_unit / line.rated'/>
                     <tr>
                         <td>
                             <p t-field='line.product_id.default_code' align='center'/>
@@ -174,7 +175,7 @@
                             <p align='center' t-field='line.quantity'/>
                         </td>
                         <td>
-                            <p align='center' t-field='line.price_unit'/>
+                            <p align='center' t-esc='unit_price'/>
                         </td>
                         <td>
                             <p align='center'> <span>%</span> <span t-esc='rate'/></p>
