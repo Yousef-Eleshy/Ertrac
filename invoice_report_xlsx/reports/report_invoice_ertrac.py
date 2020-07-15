@@ -99,7 +99,7 @@ class TaskErtracXlsxs(models.AbstractModel):
 
         for idx , invoice in enumerate(invoice_ids):
             for idxx , invoice_line_ids in enumerate(invoice.invoice_line_ids):
-                unit_tuple = math.modf(invoice_line_ids.price_unit)
+                unit_tuple = math.modf(invoice_line_ids.price_unit/invoice_line_ids.rated)
                 subtotal_tuple = math.modf(invoice_line_ids.price_subtotal)
                 allowed_tuple = math.modf(invoice_line_ids.allowed_amount)                
                 col = 0
