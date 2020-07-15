@@ -36,7 +36,7 @@ class TaskErtrackXlsx(models.AbstractModel):
         company_logo = self.env.user.company_id.logo
         imgdata = base64.b64decode(company_logo)
         image = io.BytesIO(imgdata)
-        worksheet.insert_image('O1', 'myimage.png', {'image_data': image,'x_scale': 1.2, 'y_scale': 0.9})
+        worksheet.insert_image('O1', 'myimage.png', {'image_data': image,'x_scale': 1, 'y_scale': 0.5})
         
 
         worksheet.merge_range(3, 6, 3, 7,'محضر حصر أعمال جاري (1)',bold_center)
