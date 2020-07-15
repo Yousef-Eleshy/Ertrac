@@ -22,36 +22,36 @@ class TaskErtracXlsxs(models.AbstractModel):
         
         worksheet.right_to_left()
         worksheet.set_column('A:A', 5)
-        worksheet.set_column('B:B', 50)
-        worksheet.set_column('C:X', 20)
+        worksheet.set_column('B:B', 20)
+        worksheet.set_column('C:X', 15)
         bold = workbook.add_format({'bold': True})
-        bold.set_font_size(14)
+        bold.set_font_size(13)
         bold_center = workbook.add_format({'bold': True, 'align': 'center'})
-        bold_center.set_font_size(14)
+        bold_center.set_font_size(13)
         bold_right = workbook.add_format({'bold': True, 'align': 'right'})
-        bold_right.set_font_size(14)
+        bold_right.set_font_size(13)
         
         # Company Logo
         company_logo = self.env.user.company_id.logo
         imgdata = base64.b64decode(company_logo)
         image = io.BytesIO(imgdata)
-        worksheet.insert_image('D1', 'myimage.png', {'image_data': image,'x_scale': 1.2, 'y_scale': 0.9})
+        worksheet.insert_image('D1', 'myimage.png', {'image_data': image,'x_scale': 1, 'y_scale': 0.5})
         
         worksheet.merge_range(4, 1, 4, 4, "محضر حصر أعمال", bold_center)
-        worksheet.merge_range(5, 1, 5, 4, "الأعمال التي قامت بتنفيذها الشركة المصرية لتجديد و صيانة خطوط السكك الحديدية", bold_center)
-        worksheet.merge_range(6, 1, 6, 4, "أعمال الصيانة الميكانيكية ما بين        بالخط الطالع والنازل      التابع لإدارة هندسة    خلال شهر   ", bold_center)
+        worksheet.merge_range(5, 1, 5, 6, "الأعمال التي قامت بتنفيذها الشركة المصرية لتجديد و صيانة خطوط السكك الحديدية", bold_center)
+        worksheet.merge_range(6, 1, 6, 6, "أعمال الصيانة الميكانيكية ما بين        بالخط الطالع والنازل      التابع لإدارة هندسة    خلال شهر   ", bold_center)
         worksheet.merge_range(7, 1, 7, 2, "اليوم %s" % fields.Date.today(), bold)
-        worksheet.merge_range(7, 3, 7, 4, "إجتمعنا نحن كلا من :")
+        worksheet.merge_range(7, 5, 7, 6, "إجتمعنا نحن كلا من :")
         worksheet.write(8, 0, "-1")
         worksheet.merge_range(8, 1, 8, 2, "السيد المهندس/ ")
-        worksheet.merge_range(8, 3, 8, 4, "رئيس قسم صيانة هندسة السكة")
+        worksheet.merge_range(8, 5, 8, 6, "رئيس قسم صيانة هندسة السكة")
         worksheet.write(9, 0, "-2")
         worksheet.merge_range(9, 1, 9, 2, "السيد المهندس/ ")
-        worksheet.merge_range(9, 3, 9, 4, "هندسة منطقة")
+        worksheet.merge_range(9, 5, 9, 6, "هندسة منطقة")
         worksheet.write(10, 0, "-3")
         worksheet.merge_range(10, 1, 10, 2, " السيــد/")
-        worksheet.merge_range(10, 3, 10, 4, "مندوب الشركة المصرية")
-        worksheet.merge_range(11, 1, 11, 4, "وبالمرور والمعاينة على الطبيعة تبين ان الشركة قامت بأعمال الصيانة الميكانيكية ما بين    بالخطين الطالع والنازل ", bold_center)
+        worksheet.merge_range(10, 5, 10, 6, "مندوب الشركة المصرية")
+        worksheet.merge_range(11, 1, 11, 6, "وبالمرور والمعاينة على الطبيعة تبين ان الشركة قامت بأعمال الصيانة الميكانيكية ما بين    بالخطين الطالع والنازل ", bold_center)
         worksheet.merge_range(12, 1, 12, 6, "بقسم هندسة    التابع لإدارة هندسة   :")
         cell_format_header = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
                                                   'border': 1, 'fg_color': '#faf200'})
@@ -96,7 +96,7 @@ class TaskErtracXlsxs(models.AbstractModel):
                      col = 0
                      worksheet.write(row, col, '')
                      col += 1
-                     #worksheet.write(row, col, 'الخط الطالع', cell_format_row)
+                     worksheet.write(row, col, 'الخط الطالع', cell_format_row)
                      col += 1
                      worksheet.write(row, col, timesheet_ids.from_km, cell_format_row)
                      col += 1
@@ -123,7 +123,7 @@ class TaskErtracXlsxs(models.AbstractModel):
                       col = 0
                       worksheet.write(row, col, '')
                       col += 1
-                      #worksheet.write(row, col, 'الخط النازل', cell_format_row)
+                      worksheet.write(row, col, 'الخط النازل', cell_format_row)
                       col += 1
                       worksheet.write(row, col, timesheet_ids.from_km, cell_format_row)
                       col += 1
@@ -150,7 +150,7 @@ class TaskErtracXlsxs(models.AbstractModel):
                       col = 0
                       worksheet.write(row, col, '')
                       col += 1
-                      #worksheet.write(row, col, 'الخط الطالع', cell_format_row)
+                      worksheet.write(row, col, 'الخط المفرد', cell_format_row)
                       col += 1
                       worksheet.write(row, col, timesheet_ids.from_km, cell_format_row)
                       col += 1
