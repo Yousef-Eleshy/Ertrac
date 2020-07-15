@@ -86,7 +86,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                                       cell_format_header_wrap)
                 # Headers Part
                 worksheet.merge_range(row, col, row, last_col - 1,
-                                      '%s النسب المئويه لبنود الأعمال طبقا" للعقد رقم 1 لسنة 2018/2017 للتجديد' % task.name
+                                      ' النسب المئويه لبنود الأعمال طبقا" للعقد رقم 1 لسنة 2018/2017 %s' % (task.name)
                                       , cell_format_header)
                 row += 1
 #                 for y, line in enumerate(task.task_header_id.line_ids):
