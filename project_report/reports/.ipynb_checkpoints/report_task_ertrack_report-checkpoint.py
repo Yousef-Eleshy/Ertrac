@@ -241,8 +241,8 @@ class TaskErtrackXlsx(models.AbstractModel):
             col += 1
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
             row += 1
-        worksheet.merge_range(row, 0, row, 2, " = أعمال شحن ناتج الفج للسكك والمفاتيح بعربات برية ونقلها للمقالب العمومية ", bold_right)
-        worksheet.merge_range(row, 13, row, 15, "طبقا لمحضر حصر الأعمال بالموقع والمرفق صورته", bold_right)
+#         worksheet.merge_range(row, 0, row, 2, " = أعمال شحن ناتج الفج للسكك والمفاتيح بعربات برية ونقلها للمقالب العمومية ", bold_right)
+        worksheet.merge_range(row, 12, row, 15, "طبقا لمحضر حصر الأعمال بالموقع والمرفق صورته", bold_right)
         # Footer
         row += 2
         worksheet.write(row, 1, "مندوب الشركه المنفذ", bold_center)
