@@ -110,7 +110,7 @@
                 </style>
                     <t t-set="colspan" t-value="6"/>
                     <th align='center'><p style="margin:0;font-size:15px;" align='center'>رقم بند العقد</p></th> 
-                    <th><p style="margin:0;font-size:15px;" align='center'>بيانات مفردات الاعمال</p></th> 
+                    <th><p style="margin:0;font-size:15px;width:150px;" align='center'>بيانات مفردات الاعمال</p></th> 
                     <th><p style="margin:0;font-size:15px;" align='center'>الوحدة</p></th> 
                     <th><p style="margin:0;font-size:15px;" align='center'>كمية</p></th>
                     <th>
@@ -127,7 +127,7 @@
                             </p>
                         </p>
                     </th>  
-                    <th style='width:60px'><p style="margin:0;font-size:14px;" align='center'>النسبة</p></th>
+                    <th style='width:60px'><p style="margin:0;font-size:14px;width:80px;" align='center'>النسبة</p></th>
                     <th>                        
                         <p style="margin:0;border-bottom: 1px solid black;" align='center'>تكاليف كل بند</p>
                         <p class="row money" style="margin:0">
@@ -159,6 +159,7 @@
                </thead> 
                <tbody>
                 <t t-foreach="o.invoice_line_ids" t-as="line">
+                    <t t-set='rate' t-value='round(line.rated * 100)'/>
                     <tr>
                         <td>
                             <p t-field='line.product_id.default_code' align='center'/>
@@ -176,7 +177,7 @@
                             <p align='center' t-field='line.price_unit'/>
                         </td>
                         <td>
-                            <p align='center' t-field='line.rated'/>
+                            <p align='center'> <span>%</span> <span t-esc='rate'/></p>
                         </td>
                         <td>
                             <p align='center' t-field='line.price_subtotal'/>
@@ -192,8 +193,8 @@
                     <tr>
                     </tr>
                 </t>
-                <td style='width:220px;'>
-                    <p align='center'>صافي المستخلص = <span t-field='o.pure_amount'></span></p>
+                <td>
+                    <p align='center' style='width:220px;'>صافي المستخلص = <span t-field='o.pure_amount'></span></p>
                 </td>
                </tbody>
         </table>
