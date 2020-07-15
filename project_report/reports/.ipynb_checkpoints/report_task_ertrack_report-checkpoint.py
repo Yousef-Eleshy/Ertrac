@@ -27,7 +27,7 @@ class TaskErtrackXlsx(models.AbstractModel):
         worksheet.right_to_left()
         worksheet.set_column('A:A', 5)
         worksheet.set_column('B:B', 50)
-        worksheet.set_column('C:X', 10)
+        worksheet.set_column('C:X', 5)
         bold = workbook.add_format({'bold': True})
         bold_center = workbook.add_format({'bold': True, 'align': 'center'})
         bold_right = workbook.add_format({'bold': True, 'align': 'right'})
@@ -36,12 +36,12 @@ class TaskErtrackXlsx(models.AbstractModel):
         company_logo = self.env.user.company_id.logo
         imgdata = base64.b64decode(company_logo)
         image = io.BytesIO(imgdata)
-        worksheet.insert_image('O1', 'myimage.png', {'image_data': image,'x_scale': 1, 'y_scale': 0.5})
+        worksheet.insert_image('M1', 'myimage.png', {'image_data': image,'x_scale': 1, 'y_scale': 0.5})
         
 
-        worksheet.merge_range(3, 6, 3, 7,'محضر حصر أعمال جاري (1)',bold_center)
-        worksheet.merge_range(4, 4, 4, 10, 'الأعمال التي قامت بتنفيذها الشركة المصرية لتجديد وصيانة خطوط السكك الحديدية',bold_center)
-        worksheet.merge_range(5, 3, 5, 11, 'أعمال لتعديلات حوش محطة     بخط       قسم      التابع لإدارة هندسة السكك    شهر    2020',bold_center)
+        worksheet.merge_range(3, 3, 3, 7,'محضر حصر أعمال جاري (1)',bold_center)
+        worksheet.merge_range(4, 2, 4, 13, 'الأعمال التي قامت بتنفيذها الشركة المصرية لتجديد وصيانة خطوط السكك الحديدية',bold_center)
+        worksheet.merge_range(5, 2, 5, 14, 'أعمال لتعديلات حوش محطة     بخط       قسم      التابع لإدارة هندسة السكك    شهر    2020',bold_center)
 #         worksheet.merge_range(6, 1, 6, 3, "%s محضر الحصر بتاريخ" % fields.Date.today(), bold)
         cell_format_header = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
                                                   'border': 1, 'fg_color': '#faf200'})
@@ -242,23 +242,23 @@ class TaskErtrackXlsx(models.AbstractModel):
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
             row += 1
 #         worksheet.merge_range(row, 0, row, 2, " = أعمال شحن ناتج الفج للسكك والمفاتيح بعربات برية ونقلها للمقالب العمومية ", bold_right)
-        worksheet.merge_range(row, 12, row, 15, "طبقا لمحضر حصر الأعمال بالموقع والمرفق صورته", bold_right)
+        worksheet.merge_range(row, 10, row, 17, "طبقا لمحضر حصر الأعمال بالموقع والمرفق صورته", bold_right)
         # Footer
         row += 2
         worksheet.write(row, 1, "مندوب الشركه المنفذ", bold_center)
         worksheet.merge_range(row+1, 0, row+1, 1, "السيد/ ناصر بشاي عبدالشهيد", bold_center)
 
-        worksheet.merge_range(row, 4, row, 5, "مهندس منطقه سوهاج", bold_center)
-        worksheet.merge_range(row+1, 4, row+1, 5, "م/ رحاب عبدالعال عبدالعزيز", bold_center)
+        worksheet.merge_range(row, 3, row, 7, "مهندس منطقه سوهاج", bold_center)
+        worksheet.merge_range(row+1, 3, row+1, 7, "م/ رحاب عبدالعال عبدالعزيز", bold_center)
 
-        worksheet.merge_range(row-1, 9, row-1, 11, "مندوب الهيئه", bold_center)
-        worksheet.merge_range(row, 9, row, 11, "رئيس قسم صيانه السكه سوهاج", bold_center)
-        worksheet.merge_range(row+1, 9, row+1, 11, "م/ مدحت عيد صديق", bold_center)
+        worksheet.merge_range(row-1, 9, row-1, 14, "مندوب الهيئه", bold_center)
+        worksheet.merge_range(row, 9, row, 14, "رئيس قسم صيانه السكه سوهاج", bold_center)
+        worksheet.merge_range(row+1, 9, row+1, 14, "م/ مدحت عيد صديق", bold_center)
 
         row += 4
-        worksheet.write(row, 3, "يعتمد / ", bold_right)
+        worksheet.merge_range(row, 3,row, 8, "يعتمد / ", bold_right)
         row += 1
-        worksheet.write(row, 3, "رئيس مجلس الاداره والعضو المنتدب ", bold_right)
+        worksheet.merge_range(row, 3,row, 8, "رئيس مجلس الاداره والعضو المنتدب ", bold_right)
         row += 1
-        worksheet.write(row, 3, "مهندس / مصطفى عبداللطيف أبوالمكارم ", bold_right)
+        worksheet.merge_range(row, 3,row, 8, "مهندس / مصطفى عبداللطيف أبوالمكارم ", bold_right)
         # Ahmed Salama Code End.
