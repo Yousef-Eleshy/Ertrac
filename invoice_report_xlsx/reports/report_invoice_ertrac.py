@@ -121,9 +121,9 @@ class TaskErtracXlsxs(models.AbstractModel):
                 col += 1
                 worksheet.write(row, col, int(invoice_line_ids.price_subtotal), cell_format_row_wrap)
                 col += 1
-                worksheet.write(row, col, int(allowed_tuple[0]*100), cell_format_row_wrap)  
+                worksheet.write(row, col, '', cell_format_row_wrap)  
                 col += 1
-                worksheet.write(row, col, int(invoice_line_ids.allowed_amount), cell_format_row_wrap)  
+                worksheet.write(row, col, '', cell_format_row_wrap)  
                 col += 1
                 disc = ''
                 if invoice_line_ids.disc:
