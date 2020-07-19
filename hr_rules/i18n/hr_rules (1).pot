@@ -1,0 +1,186 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hr_rules
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0e+e-20191013\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-21 07:16+0000\n"
+"PO-Revision-Date: 2020-04-21 07:16+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_rules
+#: model_terms:ir.ui.view,arch_db:hr_rules.res_config_settings_view_form_custom
+msgid "<span class=\"o_form_label\">Clearance Date</span>"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_hr_employee__accumlated_tax_base
+msgid "Accumlated Tax Base"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_hr_employee__age
+msgid "Age"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_provin_city_mode__code
+msgid "Code"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model,name:hr_rules.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: hr_rules
+#: model_terms:ir.actions.act_window,help:hr_rules.open_module_tree_provin_city
+msgid "Create a new Provin city"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_provin_city_mode__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_provin_city_mode__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_provin_city_mode__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model,name:hr_rules.model_hr_employee
+msgid "Employee"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_hr_employee__registration_number
+msgid "Employee Number"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_hr_payroll_structure__one_per_month
+msgid "Execute once per Month"
+msgstr ""
+
+#. module: hr_rules
+#: model_terms:ir.ui.view,arch_db:hr_rules.view_employee_filter_sutom_fields
+msgid "Extra Remaining Leaves"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_provin_city_mode__id
+msgid "ID"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_provin_city_mode____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_provin_city_mode__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_provin_city_mode__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_provin_city_mode__name
+msgid "Name"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_hr_employee__percentage_tax
+msgid "Percentage Tax"
+msgstr ""
+
+#. module: hr_rules
+#: model_terms:ir.ui.view,arch_db:hr_rules.view_provin_city_form_field
+msgid "Provin City Form"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.actions.act_window,name:hr_rules.open_module_tree_provin_city
+#: model:ir.ui.menu,name:hr_rules.menu_hr_department_tree
+msgid "Provin city"
+msgstr ""
+
+#. module: hr_rules
+#: model_terms:ir.ui.view,arch_db:hr_rules.view_provin_city_form_field_tree
+msgid "Provin city Tree"
+msgstr ""
+
+#. module: hr_rules
+#: model_terms:ir.ui.view,arch_db:hr_rules.view_employee_filter_sutom_fields
+msgid "Provin-City"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_hr_employee__provin_city_id
+msgid "Province-City"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_hr_employee__extra_remaining_leaves
+msgid "Relay Leave Balance"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_hr_employee__remaining_leaves
+msgid "Remaining Leaves"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model,name:hr_rules.model_hr_payroll_structure
+msgid "Salary Structure"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_hr_employee__state_id
+#: model_terms:ir.ui.view,arch_db:hr_rules.view_employee_filter_sutom_fields
+msgid "State"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,field_description:hr_rules.field_res_config_settings__taxbase_erase_date
+msgid "Tax Base Clearance on "
+msgstr ""
+
+#. module: hr_rules
+#: model_terms:ir.ui.view,arch_db:hr_rules.res_config_settings_view_form_custom
+msgid "Tax Base Config"
+msgstr ""
+
+#. module: hr_rules
+#: model_terms:ir.ui.view,arch_db:hr_rules.res_config_settings_view_form_custom
+msgid "Tax Base Date"
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model.fields,help:hr_rules.field_hr_employee__remaining_leaves
+msgid ""
+"Total number of paid time off allocated to this employee, change this value "
+"to create allocation/time off request. Total based on all the time off types"
+" without overriding limit."
+msgstr ""
+
+#. module: hr_rules
+#: model:ir.model,name:hr_rules.model_provin_city_mode
+msgid "provin.city.mode"
+msgstr ""
