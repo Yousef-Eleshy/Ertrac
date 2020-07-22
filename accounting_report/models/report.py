@@ -155,6 +155,7 @@ class acounting_report(models.Model):
                     columns.append(column)
             else:
                 for _ in range(0,4):
+                    style = 'text-align:left;border:1px solid black;border-bottom:none;border-top:none'
                     columns.append({'name':'','style':style})
             
             if len(v_lines) > i:
