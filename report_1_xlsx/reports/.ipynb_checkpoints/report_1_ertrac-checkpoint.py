@@ -39,7 +39,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         image = io.BytesIO(imgdata)
         worksheet.insert_image('B1', 'myimage.png', {'image_data': image,'x_scale': 1, 'y_scale': 0.5})
 
-        worksheet.merge_range(4, 1, 4, 3, " %s %s بيان موقف الأعمال التى قامت بها الشركة المصرية عن شهر" % (fields.Date.today().strftime("%B"),
+        worksheet.merge_range(4, 1, 4, 5, " %s %s بيان موقف الأعمال التى قامت بها الشركة المصرية عن شهر" % (fields.Date.today().strftime("%B"),
                                                                                             fields.date.today().strftime("%Y")),
                               bold_center)
 
@@ -60,47 +60,48 @@ class TaskErtracXlsxs(models.AbstractModel):
         cell_format_header_wrap.set_text_wrap()
         
         worksheet.write(5, 1, 'الخط', cell_format_header)
-        worksheet.write(5, 2, 'ما تم خلال الشهر (عادية)', cell_format_header)
-        worksheet.write(5, 3, 'ما تم خلال الشهر (نائية)', cell_format_header)
-        worksheet.write(5, 4, 'اجمالى ما تم خلال الشهر', cell_format_header)
+        worksheet.write(5, 2, 'ما تم خلال الشهر (عادية)', cell_format_header_wrap)
+        worksheet.write(5, 3, 'ما تم خلال الشهر (نائية)', cell_format_header_wrap)
+        worksheet.write(5, 4, 'اجمالى ما تم خلال الشهر', cell_format_header_wrap)
 
         row = 6
-
+        
+        tasks = []
+        # arrange timesheets according to tasks 
         for idx , timesheet in enumerate(timesheet_ids):
-            task_name = timesheet.task_id.name
-            worksheet.merge_range(row, 1, row, 4, task_name, bold_right)
-            row += 1
+            tasks.append(timesheet.task_id.name)
+        
+        taskss = list(dict.fromkeys(tasks))
+        
+        for task in taskss :
             total = 0
             total_normal = 0.0
             total_remote = 0.0
             total_total = 0.0
-            normal = 0.0
-            remote = 0.0
-            for idxx , timesheets in enumerate(timesheet_ids):
-                if task_name == timesheets.task_id.name:
-                    worksheet.write(row, 1, timesheets.project_id.name , cell_format_row)
-                    if timesheets.region == 'normal':
-                        normal = timesheets.unit_amount
+            worksheet.merge_range(row, 1, row, 4, task, bold_right)
+            for idx , timesheet in enumerate(timesheet_ids):
+                normal = 0.0
+                remote = 0.0
+                if task == timesheet.task_id.name:
+                    worksheet.write(row, 1, timesheet.project_id.name , cell_format_row)
+                    if timesheet.region == 'normal':
+                        normal = timesheet.unit_amount
                         remote = 0.0
-                        total_normal = timesheets.unit_amount + total_normal
-                        worksheet.write(row, 3, '0.000' , cell_format_row)
-                        worksheet.write(row, 2, timesheets.unit_amount , cell_format_row)
-                    elif timesheets.region == 'remote' :
-                        remote = timesheets.unit_amount
+                        total_normal = timesheet.unit_amount + total_normal
+                        worksheet.write(row, 3, '0.000' , cell_format_row_wrap)
+                        worksheet.write(row, 2, timesheet.unit_amount , cell_format_row_wrap)
+                    elif timesheet.region == 'remote' :
+                        remote = timesheet.unit_amount
                         normal = 0.0
-                        total_remote = timesheets.unit_amount + total_remote
-                        worksheet.write(row, 3, timesheets.unit_amount , cell_format_row)
-                        worksheet.write(row, 2, '0.000' , cell_format_row)
+                        total_remote = timesheet.unit_amount + total_remote
+                        worksheet.write(row, 3, timesheet.unit_amount , cell_format_row_wrap)
+                        worksheet.write(row, 2, '0.000' , cell_format_row_wrap)
                     total = remote + normal
-                    worksheet.write(row, 4, total , cell_format_row)
-                            
-#                     total = worksheet.cell(row,3).value + worksheet.cell(row,2).value
+                    worksheet.write(row, 4, total , cell_format_row_wrap)
                     total_total = total_total + total
-#                     worksheet.write(row, 4, total , cell_format_row)
                     row += 1
-            
-            # Final Total
             row += 1
+            # Final Total
             worksheet.write(row, 1, 'إجمالى (كم)')
             worksheet.write(row, 2, total_normal , cell_format_total)
             worksheet.write(row, 3, total_remote ,cell_format_total)
