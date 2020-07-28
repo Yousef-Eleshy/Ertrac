@@ -74,20 +74,25 @@ class TaskErtracXlsxs(models.AbstractModel):
             total_normal = 0.0
             total_remote = 0.0
             total_total = 0.0
+            normal = 0.0
+            remote = 0.0
             for idxx , timesheets in enumerate(timesheet_ids):
                 if task_name == timesheets.task_id.name:
                     worksheet.write(row, 1, timesheets.project_id.name , cell_format_row)
                     if timesheets.region == 'normal':
+                        normal = timesheets.unit_amount
+                        remote = 0.0
                         total_normal = timesheets.unit_amount + total_normal
                         worksheet.write(row, 3, '0.000' , cell_format_row)
                         worksheet.write(row, 2, timesheets.unit_amount , cell_format_row)
                     elif timesheets.region == 'remote' :
+                        remote = timesheets.unit_amount
+                        normal = 0.0
                         total_remote = timesheets.unit_amount + total_remote
                         worksheet.write(row, 3, timesheets.unit_amount , cell_format_row)
                         worksheet.write(row, 2, '0.000' , cell_format_row)
-                    for row_value in worksheet.values:
-                        total = row_value[2] + row_value[3]
-                        worksheet.write(row, 4, total , cell_format_row)
+                    total = remote + normal
+                    worksheet.write(row, 4, total , cell_format_row)
                             
 #                     total = worksheet.cell(row,3).value + worksheet.cell(row,2).value
                     total_total = total_total + total
