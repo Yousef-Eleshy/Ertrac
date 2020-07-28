@@ -70,6 +70,7 @@ class TaskErtracXlsxs(models.AbstractModel):
             task_name = timesheet.task_id.name
             worksheet.merge_range(row, 1, row, 4, task_name, bold_right)
             row += 1
+            total = 0
             total_normal = 0.0
             total_remote = 0.0
             total_total = 0.0
@@ -84,9 +85,14 @@ class TaskErtracXlsxs(models.AbstractModel):
                         total_remote = timesheets.unit_amount + total_remote
                         worksheet.write(row, 3, timesheets.unit_amount , cell_format_row)
                         worksheet.write(row, 2, '0.000' , cell_format_row)
-                    total = worksheet.cell(row,3).value + worksheet.cell(row,2).value
+                    for rows in worksheet.values:
+                        for value in rows:
+                            total = value[2] + value[3]
+                        worksheet.write(row, 4, total , cell_format_row)
+                            
+#                     total = worksheet.cell(row,3).value + worksheet.cell(row,2).value
                     total_total = total_total + total
-                    worksheet.write(row, 4, total , cell_format_row)
+#                     worksheet.write(row, 4, total , cell_format_row)
                     row += 1
             
             # Final Total
