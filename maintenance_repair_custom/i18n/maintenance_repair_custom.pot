@@ -1,0 +1,130 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* maintenance_repair_custom
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0e+e-20191013\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-09 11:35+0000\n"
+"PO-Revision-Date: 2020-04-09 11:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: maintenance_repair_custom
+#: model_terms:ir.actions.act_window,help:maintenance_repair_custom.hr_equipment_request_action_cal_2
+msgid "Add a new maintenance request"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model_terms:ir.ui.view,arch_db:maintenance_repair_custom.view_validate_request
+msgid "Cancel"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_maintenance_request__company_id
+msgid "Company"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_validation_requests__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_validation_requests__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_validation_requests__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model_terms:ir.ui.view,arch_db:maintenance_repair_custom.view_validate_request
+msgid "Do you really want to validate the selected invoices(s)?"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:maintenance.stage,name:maintenance_repair_custom.stage_-1
+msgid "Draft"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_maintenance_request__employee_id_custom
+msgid "Employee"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model_terms:ir.actions.act_window,help:maintenance_repair_custom.hr_equipment_request_action_cal_2
+msgid ""
+"Follow the process of the request and communicate with the collaborator."
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_validation_requests__id
+msgid "ID"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_validation_requests____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_validation_requests__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_validation_requests__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_maintenance_request__used_location
+msgid "Location"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model,name:maintenance_repair_custom.model_maintenance_request
+msgid "Maintenance Request"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.actions.act_window,name:maintenance_repair_custom.hr_equipment_request_action_cal_2
+#: model:ir.ui.menu,name:maintenance_repair_custom.menu_m_request_list_custom
+#: model_terms:ir.ui.view,arch_db:maintenance_repair_custom.hr_equipment_request_view_tree_custom2
+msgid "Maintenance Requests Lists"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_maintenance_request__quantity_equipment
+msgid "Quantity"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model.fields,field_description:maintenance_repair_custom.field_maintenance_request__repair_id
+msgid "Repair"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model_terms:ir.ui.view,arch_db:maintenance_repair_custom.view_validate_request
+msgid "Validate"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.actions.act_window,name:maintenance_repair_custom.validation_action_request_record
+#: model_terms:ir.ui.view,arch_db:maintenance_repair_custom.view_validate_request
+msgid "Validate Requests"
+msgstr ""
+
+#. module: maintenance_repair_custom
+#: model:ir.model,name:maintenance_repair_custom.model_validation_requests
+msgid "validation.requests"
+msgstr ""
