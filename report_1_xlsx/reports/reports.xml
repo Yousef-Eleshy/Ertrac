@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <report
+                id="report_1_ertrac"
+                model="account.analytic.line"
+                string="موقف بيان الأعمال"
+                report_type="xlsx"
+                name="report_1_xlsx.report_1_ertrac"
+                file="report_1_xlsx.report_1_ertrac"
+                attachment_use="False"
+        />
+</odoo>
