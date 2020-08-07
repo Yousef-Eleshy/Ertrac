@@ -160,8 +160,10 @@
                <tbody>
                 <t t-foreach="o.invoice_line_ids" t-as="line">
                     <t t-set='rate' t-value='round(line.rated * 100)'/>
-                    <t t-set='unit_price' t-value='line.price_unit / line.rated'/>
-                    <tr>
+                    <t t-if='line.rated != 0' t-set='unit_price' t-value='line.price_unit / line.rated'/>
+                    <t t-if='line.rated == 0' t-set='unit_price' t-value='0'/>
+                    
+                    <tr t-if='not line.display_type'>
                         <td>
                             <p t-field='line.product_id.default_code' align='center'/>
                         </td>
@@ -191,9 +193,78 @@
                             <p align='center' t-field='line.disc'/>
                         </td>
                     </tr>
+                    <t t-if="line.display_type == 'line_section' and line.name ==  'خصم ضمان اعمال% 10'">
+                      <tr>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                         <td>
+                             <p align='center'>الاجمالي</p>
+                        </td>
+                        <td></td>
+                        <td>
+                            <p align='center' t-field='o.total_line'/>
+                        </td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                         <td>
+                            <p align='right' t-field="line.name"/>
+                        </td> 
+                         <td></td> 
+                         <td></td>
+                         <td></td>
+                         <td>
+                             <p align='center'>10%</p>
+                          </td>
+                         <td>
+                            <p align='center' t-field='o.ten_perc'/>
+                        </td>
+                        <td></td>
+                        <td></td>    
+                     </tr>
+                     <tr>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                         <td>
+                             <p align='center'>الصافي</p>
+                        </td>
+                        <td></td>
+                        <td>
+                            <p align='center' t-field='o.pure'/>
+                        </td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                     
+                    </t>
+                    <tr t-elif="line.display_type == 'line_section'">
+                        <td colspan="99">
+                            <p align='right' t-field="line.name"/>
+                        </td>
+                    </tr>  
                     <tr>
                     </tr>
                 </t>
+                   <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>   
+                   <td></td>
+                <td>
+                    <p align='center'><span t-field='o.total_machine_rent'></span></p>
+                </td>
+                <td></td>
+                <td></td>
+                   </tr>
+                <tr>
                    <td></td>
                    <td></td>
                     <td></td>
@@ -205,6 +276,7 @@
                 <td>
                     <p align='center'><span t-field='o.pure_amount'></span></p>
                 </td>
+                </tr>
                </tbody>
         </table>
             
