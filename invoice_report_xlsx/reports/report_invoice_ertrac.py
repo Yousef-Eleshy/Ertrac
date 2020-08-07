@@ -19,7 +19,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         format_right_to_left = workbook.add_format()
         format_right_to_left.set_reading_order(2)
         cell_format_right = workbook.add_format()
-        cell_format_right.set_align('right')
+        cell_format_right.set_align('right') 
 
         
         worksheet.right_to_left()
