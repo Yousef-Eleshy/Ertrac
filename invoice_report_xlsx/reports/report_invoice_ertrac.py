@@ -77,7 +77,9 @@ class TaskErtracXlsxs(models.AbstractModel):
                                                   'border': 1, 'fg_color': '#FFC7CE'})
         cell_format_row_wrap = workbook.add_format({'bold': False, 'align': 'center', 'valign': 'vcenter',
                                                'border': 1})
-        
+        cell_section_format = workbook.add_format({'bold': False, 'align': 'right', 'valign': 'vcenter',
+                                               'border': 1})
+        cell_section_format.set_text_wrap()
         cell_format_row_wrap.set_text_wrap()
         cell_format_header.set_center_across()
         
@@ -104,41 +106,68 @@ class TaskErtracXlsxs(models.AbstractModel):
 
         for idx , invoice in enumerate(invoice_ids):
             for idxx , invoice_line_ids in enumerate(invoice.invoice_line_ids):
-                unit_tuple = math.modf(invoice_line_ids.price_unit/invoice_line_ids.rated)
-                subtotal_tuple = math.modf(invoice_line_ids.price_subtotal)
-                allowed_tuple = math.modf(invoice_line_ids.allowed_amount)                
-                col = 0
-                worksheet.write(row, col, invoice_line_ids.product_id.default_code , cell_format_row_wrap)
-                col += 1
-                worksheet.write(row, col, invoice_line_ids.product_id.name, cell_format_row_wrap)
-                col += 1
-                worksheet.write(row, col, invoice_line_ids.product_uom_id.name ,cell_format_row_wrap)
-                col += 1
-                worksheet.write(row, col, invoice_line_ids.quantity , cell_format_row_wrap)
-                col += 1
-                worksheet.write(row, col, int(unit_tuple[0]*100), cell_format_row_wrap)
-                col += 1
-                worksheet.write(row, col, int(unit_tuple[1]), cell_format_row_wrap)
-                col += 1
-                worksheet.write(row, col, "%s %s" %(invoice_line_ids.rated*100,'%'), cell_format_row_wrap)
-                col += 1
-                worksheet.write(row, col, int(subtotal_tuple[0]*100), cell_format_row_wrap)
-                col += 1
-                worksheet.write(row, col, int(invoice_line_ids.price_subtotal), cell_format_row_wrap)
-                col += 1
-                worksheet.write(row, col, '', cell_format_row_wrap)  
-                col += 1
-                worksheet.merge_range(row, col, row , col+1, '', cell_format_row_wrap)
-                col += 1
-                col += 1
-                disc = ''
-                if invoice_line_ids.disc:
-                    disc = invoice_line_ids.disc 
-                else:
+                if not invoice_line_ids.display_type:         
+                    unit_tuple = math.modf(invoice_line_ids.price_unit/invoice_line_ids.rated) if invoice_line_ids.rated != 0 else (0,0)
+                    subtotal_tuple = math.modf(invoice_line_ids.price_subtotal)
+                    allowed_tuple = math.modf(invoice_line_ids.allowed_amount)                
+                    col = 0
+                    worksheet.write(row, col, invoice_line_ids.product_id.default_code , cell_format_row_wrap)
+                    col += 1
+                    worksheet.write(row, col, invoice_line_ids.product_id.name, cell_format_row_wrap)
+                    col += 1
+                    worksheet.write(row, col, invoice_line_ids.product_uom_id.name ,cell_format_row_wrap)
+                    col += 1
+                    worksheet.write(row, col, invoice_line_ids.quantity , cell_format_row_wrap)
+                    col += 1
+                    worksheet.write(row, col, int(unit_tuple[0]*100), cell_format_row_wrap)
+                    col += 1
+                    worksheet.write(row, col, int(unit_tuple[1]), cell_format_row_wrap)
+                    col += 1
+                    worksheet.write(row, col, "%s %s" %(invoice_line_ids.rated*100,'%'), cell_format_row_wrap)
+                    col += 1
+                    worksheet.write(row, col, int(subtotal_tuple[0]*100), cell_format_row_wrap)
+                    col += 1
+                    worksheet.write(row, col, int(invoice_line_ids.price_subtotal), cell_format_row_wrap)
+                    col += 1
+                    worksheet.write(row, col, '', cell_format_row_wrap)  
+                    col += 1
+                    worksheet.merge_range(row, col, row , col+1, '', cell_format_row_wrap)
+                    col += 1
+                    col += 1
                     disc = ''
-                worksheet.write(row, col, disc ,cell_format_row)
-                col += 1
-                row += 1
+                    if invoice_line_ids.disc:
+                        disc = invoice_line_ids.disc 
+                    else:
+                        disc = ''
+                    worksheet.write(row, col, disc ,cell_format_row)
+                    col += 1
+                    row += 1
+                elif invoice_line_ids.display_type == 'line_section' and invoice_line_ids.name ==  'خصم ضمان اعمال% 10':
+                    worksheet.merge_range(row, 0,row,3, '', cell_format_row_wrap)
+                    worksheet.merge_range(row, 4,row,5, 'الاجمالي', cell_format_row_wrap)
+                    worksheet.write(row, 6,invoice.total_line, cell_format_row_wrap)
+                    worksheet.merge_range(row, 8,row,12, '', cell_format_row_wrap)
+
+                    row +=1
+                    worksheet.write(row, 0,'', cell_format_row_wrap)
+                    worksheet.write(row, 1, invoice_line_ids.name, cell_format_row_wrap)
+                    worksheet.merge_range(row, 2,row,4, '', cell_format_row_wrap)
+                    worksheet.write(row, 5,'10%', cell_format_row_wrap)
+                    worksheet.write(row, 6,invoice.ten_perc, cell_format_row_wrap)
+                    worksheet.merge_range(row, 7,row,12, '', cell_format_row_wrap)
+                    
+                    row +=1
+                    worksheet.merge_range(row, 0,row,3, '', cell_format_row_wrap)
+                    worksheet.write(row, 4, 'الصافي', cell_format_row_wrap)
+                    worksheet.write(row, 6,invoice.pure, cell_format_row_wrap)
+                    worksheet.merge_range(row, 7,row,12, '', cell_format_row_wrap)
+                    row +=1
+                    
+                else:
+                    worksheet.merge_range(row, 0,row,12, invoice_line_ids.name , cell_section_format)
+                    row += 1
+            
+            worksheet.merge_range(row,7, row, 8, invoice.total_machine_rent ,cell_format_row)
             row +=1
             worksheet.merge_range(row, 3, row, 5, "صافي المستخلص",cell_format_row_wrap)
             worksheet.merge_range(row,7, row, 8, invoice.pure_amount ,cell_format_row)
