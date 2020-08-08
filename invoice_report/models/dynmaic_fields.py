@@ -29,7 +29,7 @@ class AcountMove(models.Model):
         total_machine_rent = 0
         invoices = self.invoice_line_ids
         for i in range(0,len(invoices)):
-            if invoices[i].name == 'خصم ضمان اعمال 10%':
+            if invoices[i].name == 'خصم ضمان اعمال':
                 products_end = i
             if invoices[i].name ==  'خصم ايجار الماكينات':
                 machine_rent_start = i + 1
