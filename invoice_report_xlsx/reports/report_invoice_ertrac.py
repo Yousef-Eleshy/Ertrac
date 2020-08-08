@@ -103,10 +103,11 @@ class TaskErtracXlsxs(models.AbstractModel):
         worksheet.merge_range(15, 10, 15, 11, 'جنية', cell_format_header_wrap)
         worksheet.merge_range(14, 12, 15, 12, 'ملاحظات', cell_format_header)
         row = 16
+        section =0
 
         for idx , invoice in enumerate(invoice_ids):
             for idxx , invoice_line_ids in enumerate(invoice.invoice_line_ids):
-                if not invoice_line_ids.display_type:         
+                if not invoice_line_ids.display_type:
                     unit_tuple = math.modf(invoice_line_ids.price_unit/invoice_line_ids.rated) if invoice_line_ids.rated != 0 else (0,0)
                     subtotal_tuple = math.modf(invoice_line_ids.price_subtotal)
                     allowed_tuple = math.modf(invoice_line_ids.allowed_amount)                
@@ -142,7 +143,8 @@ class TaskErtracXlsxs(models.AbstractModel):
                     worksheet.write(row, col, disc ,cell_format_row)
                     col += 1
                     row += 1
-                elif invoice_line_ids.display_type == 'line_section' and invoice_line_ids.name ==  'خصم ضمان اعمال% 10':
+                elif invoice_line_ids.display_type == 'line_section' and invoice_line_ids.name == 'خصم ضمان اعمال':
+                    section =+ 1
                     worksheet.merge_range(row, 0,row,3, '', cell_format_row_wrap)
                     worksheet.merge_range(row, 4,row,5, 'الاجمالي', cell_format_row_wrap)
                     worksheet.write(row, 6,invoice.total_line, cell_format_row_wrap)
@@ -158,7 +160,7 @@ class TaskErtracXlsxs(models.AbstractModel):
                     
                     row +=1
                     worksheet.merge_range(row, 0,row,3, '', cell_format_row_wrap)
-                    worksheet.write(row, 4, 'الصافي', cell_format_row_wrap)
+                    worksheet.merge_range(row, 4, row, 5, 'الصافي', cell_format_row_wrap)
                     worksheet.write(row, 6,invoice.pure, cell_format_row_wrap)
                     worksheet.merge_range(row, 7,row,12, '', cell_format_row_wrap)
                     row +=1
