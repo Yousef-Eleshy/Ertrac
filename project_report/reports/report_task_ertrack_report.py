@@ -69,7 +69,7 @@ class TaskErtrackXlsx(models.AbstractModel):
             col += 1
             worksheet.merge_range(row, col, row + 1, col, 'بيان الأعمال', cell_format_header)
             col += 1
-            worksheet.merge_range(row, col, row + 1, col, 'الوحده بالكيلو', cell_format_header)
+            worksheet.merge_range(row, col, row + 1, col, 'الوحده', cell_format_header)
             col += 1
             worksheet.merge_range(row, col, row + 1, col, 'الكميه', cell_format_header)
             col += 1
@@ -168,7 +168,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                     col += 1
                     worksheet.write(row, col, child_task.name, cell_format_row)
                     col += 1
-                    worksheet.write(row, col, "كم", cell_format_row)
+                    worksheet.write(row, col,child_task.sale_line_id.product_uom, cell_format_row)
                     col += 1
                     worksheet.write(row, col, child_task.effective_hours, cell_format_row)
                     col += 1
@@ -237,7 +237,7 @@ class TaskErtrackXlsx(models.AbstractModel):
             col += 1
             worksheet.write(row, col, 'أﻷجمالى', cell_format_row)
             col += 1
-            worksheet.write(row, col, 'كم', cell_format_row)
+            worksheet.write(row, col, task.sale_line_id.product_uom , cell_format_row)
             col += 1
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
             row += 1
