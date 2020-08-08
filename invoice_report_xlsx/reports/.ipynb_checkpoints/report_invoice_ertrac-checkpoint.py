@@ -25,7 +25,9 @@ class TaskErtracXlsxs(models.AbstractModel):
         worksheet.right_to_left()
         worksheet.set_column('A:A', 5)
         worksheet.set_column('E:F', 5)
-        worksheet.set_column('H:L', 5)
+        worksheet.set_column('I:I', 10)
+        worksheet.set_column('H:H', 5)
+        worksheet.set_column('J:L', 5)
         worksheet.set_column('B:B', 20)
         worksheet.set_column('C:D', 10)
         worksheet.set_column('G:G', 10)
@@ -108,6 +110,8 @@ class TaskErtracXlsxs(models.AbstractModel):
         for idx , invoice in enumerate(invoice_ids):
             for idxx , invoice_line_ids in enumerate(invoice.invoice_line_ids):
                 if not invoice_line_ids.display_type:
+                    if not invoice_line_ids.product_id.default_code:
+                        invoice_line_ids.product_id.default_code = ''
                     unit_tuple = math.modf(invoice_line_ids.price_unit/invoice_line_ids.rated) if invoice_line_ids.rated != 0 else (0,0)
                     subtotal_tuple = math.modf(invoice_line_ids.price_subtotal)
                     allowed_tuple = math.modf(invoice_line_ids.allowed_amount)                
@@ -144,26 +148,32 @@ class TaskErtracXlsxs(models.AbstractModel):
                     col += 1
                     row += 1
                 elif invoice_line_ids.display_type == 'line_section' and invoice_line_ids.name == 'خصم ضمان اعمال':
+                    t1_tuple = math.modf(invoice.total_line)
+                    t2_tuple = math.modf(invoice.ten_perc)
+                    t3_tuple = math.modf(invoice.pure)
                     section =+ 1
                     worksheet.merge_range(row, 0,row,3, '', cell_format_row_wrap)
                     worksheet.merge_range(row, 4,row,5, 'الاجمالي', cell_format_row_wrap)
-                    worksheet.write(row, 6,invoice.total_line, cell_format_row_wrap)
-                    worksheet.merge_range(row, 8,row,12, '', cell_format_row_wrap)
+                    worksheet.write(row, 7,math.floor(t1_tuple[0]*100), cell_format_row_wrap)
+                    worksheet.write(row,8,t1_tuple[1], cell_format_row_wrap)
+                    worksheet.merge_range(row, 9,row,12, '', cell_format_row_wrap)
 
                     row +=1
                     worksheet.write(row, 0,'', cell_format_row_wrap)
                     worksheet.write(row, 1, invoice_line_ids.name, cell_format_row_wrap)
                     worksheet.merge_range(row, 2,row,4, '', cell_format_row_wrap)
-                    worksheet.write(row, 5,'10%', cell_format_row_wrap)
-                    worksheet.write(row, 6,invoice.ten_perc, cell_format_row_wrap)
-                    worksheet.merge_range(row, 7,row,12, '', cell_format_row_wrap)
+                    worksheet.write(row, 6,'10%', cell_format_row_wrap)
+                    worksheet.write(row, 7,math.floor(t2_tuple[0]*100), cell_format_row_wrap)
+                    worksheet.write(row,8,t2_tuple[1], cell_format_row_wrap)
+                    worksheet.merge_range(row, 9,row,12, '', cell_format_row_wrap)
                     
                     row +=1
                     worksheet.merge_range(row, 0,row,3, '', cell_format_row_wrap)
                     worksheet.merge_range(row, 4, row, 5, 'الصافي', cell_format_row_wrap)
-                    worksheet.write(row, 6,invoice.pure, cell_format_row_wrap)
-                    worksheet.merge_range(row, 7,row,12, '', cell_format_row_wrap)
-                    row +=1
+                    worksheet.write(row, 7,math.floor(t3_tuple[0]*100), cell_format_row_wrap)
+                    worksheet.write(row,8,t3_tuple[1], cell_format_row_wrap)
+                    worksheet.merge_range(row, 9,row,12, '', cell_format_row_wrap)
+                    row += 1
                     
                 else:
                     worksheet.merge_range(row, 0,row,12, invoice_line_ids.name , cell_section_format)
