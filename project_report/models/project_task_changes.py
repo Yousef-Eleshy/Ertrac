@@ -28,6 +28,10 @@ class ProjectTaskInherit(models.Model):
     _inherit = 'project.task'
 
     task_header_id = fields.Many2one('project.task.header', "Header")
+    
+    # Allowing up to 4 decimal places in Quantity
+    planned_hours = fields.Float("Planned Hours", digits=(12,4), help='It is the time planned to achieve the task. If this document has sub-tasks, it means the time needed to achieve this tasks and its childs.',tracking=True)
+
 
     def print_report(self):
         # Method to print parent tasks ercac report
