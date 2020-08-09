@@ -182,9 +182,10 @@ class TaskErtracXlsxs(models.AbstractModel):
                     worksheet.merge_range(row, 0,row,12, invoice_line_ids.name , cell_section_format)
                     row += 1
             
-            worksheet.merge_range(row,7, row, 8, abs(invoice.total_machine_rent) ,cell_format_row)
+            #worksheet.merge_range(row,7, row, 8, abs(invoice.total_machine_rent) ,cell_format_row)
+            worksheet.merge_range(row,7, row, 8, "صافي المستخلص" ,cell_format_row)
             row +=1
-            worksheet.merge_range(row, 3, row, 5, "صافي المستخلص",cell_format_row_wrap)
+            #worksheet.merge_range(row, 3, row, 5, "صافي المستخلص",cell_format_row_wrap)
             worksheet.merge_range(row,7, row, 8, invoice.pure_amount ,cell_format_row)
 #              worksheet.merge_range(row_initial+1, 1, row , 1, 'الخط الطالع',cell_format_row)
 #              # Final Total
