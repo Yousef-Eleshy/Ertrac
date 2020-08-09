@@ -29,3 +29,6 @@ class project_fields(models.Model):
     
     
     description2 = fields.Char(string="Description2")
+    
+    # Allowing up to 4 decimal places in Line Quantity
+    unit_amount = fields.Float('Quantity', digits=(12,4))
