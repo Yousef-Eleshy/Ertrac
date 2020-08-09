@@ -38,6 +38,8 @@ class TaskErtracXlsxs(models.AbstractModel):
         bold_center.set_font_size(12)
         bold_right = workbook.add_format({'bold': True, 'align': 'right'})
         bold_right.set_font_size(12)
+        bold_left = workbook.add_format({'bold': True, 'align': 'left'})
+        bold_left.set_font_size(12)
         
         # Company Logo
         company_logo = self.env.user.company_id.logo
@@ -112,9 +114,10 @@ class TaskErtracXlsxs(models.AbstractModel):
                 if not invoice_line_ids.display_type:
                     if not invoice_line_ids.product_id.default_code:
                         invoice_line_ids.product_id.default_code = ''
-                    unit_tuple = math.modf(invoice_line_ids.price_unit/invoice_line_ids.rated) if invoice_line_ids.rated != 0 else (0,0)
-                    subtotal_tuple = math.modf(invoice_line_ids.price_subtotal)
-                    allowed_tuple = math.modf(invoice_line_ids.allowed_amount)                
+                    unit_tuple = math.modf(abs(invoice_line_ids.price_unit/invoice_line_ids.rated)) if invoice_line_ids.rated != 0 else (0,0)
+                    
+                    subtotal_tuple = math.modf(abs(invoice_line_ids.price_subtotal))
+                    allowed_tuple = math.modf(abs(invoice_line_ids.allowed_amount))                
                     col = 0
                     worksheet.write(row, col, invoice_line_ids.product_id.default_code , cell_format_row_wrap)
                     col += 1
@@ -128,11 +131,11 @@ class TaskErtracXlsxs(models.AbstractModel):
                     col += 1
                     worksheet.write(row, col, int(unit_tuple[1]), cell_format_row_wrap)
                     col += 1
-                    worksheet.write(row, col, "%s %s" %(invoice_line_ids.rated*100,'%'), cell_format_row_wrap)
+                    worksheet.write(row, col, "%s %s" %(abs(invoice_line_ids.rated*100),'%'), cell_format_row_wrap)
                     col += 1
                     worksheet.write(row, col, int(subtotal_tuple[0]*100), cell_format_row_wrap)
                     col += 1
-                    worksheet.write(row, col, int(invoice_line_ids.price_subtotal), cell_format_row_wrap)
+                    worksheet.write(row, col, int(abs(invoice_line_ids.price_subtotal)), cell_format_row_wrap)
                     col += 1
                     worksheet.write(row, col, '', cell_format_row_wrap)  
                     col += 1
@@ -141,16 +144,16 @@ class TaskErtracXlsxs(models.AbstractModel):
                     col += 1
                     disc = ''
                     if invoice_line_ids.disc:
-                        disc = invoice_line_ids.disc 
+                        disc = abs(invoice_line_ids.disc)
                     else:
                         disc = ''
                     worksheet.write(row, col, disc ,cell_format_row)
                     col += 1
                     row += 1
                 elif invoice_line_ids.display_type == 'line_section' and invoice_line_ids.name == 'خصم ضمان اعمال':
-                    t1_tuple = math.modf(invoice.total_line)
-                    t2_tuple = math.modf(invoice.ten_perc)
-                    t3_tuple = math.modf(invoice.pure)
+                    t1_tuple = math.modf(abs(invoice.total_line))
+                    t2_tuple = math.modf(abs(invoice.ten_perc))
+                    t3_tuple = math.modf(abs(invoice.pure))
                     section =+ 1
                     worksheet.merge_range(row, 0,row,3, '', cell_format_row_wrap)
                     worksheet.merge_range(row, 4,row,5, 'الاجمالي', cell_format_row_wrap)
@@ -179,7 +182,7 @@ class TaskErtracXlsxs(models.AbstractModel):
                     worksheet.merge_range(row, 0,row,12, invoice_line_ids.name , cell_section_format)
                     row += 1
             
-            worksheet.merge_range(row,7, row, 8, invoice.total_machine_rent ,cell_format_row)
+            worksheet.merge_range(row,7, row, 8, abs(invoice.total_machine_rent) ,cell_format_row)
             row +=1
             worksheet.merge_range(row, 3, row, 5, "صافي المستخلص",cell_format_row_wrap)
             worksheet.merge_range(row,7, row, 8, invoice.pure_amount ,cell_format_row)
@@ -203,9 +206,9 @@ class TaskErtracXlsxs(models.AbstractModel):
         row += 2
         worksheet.merge_range(row, 2, row, 8, "جميع الأعمال تمت طبقا للأصول الفنية للهيئة وبحالة جيدة", bold_center)
         row += 1
-        worksheet.write(row, 1, "مندوب الشركه", bold_center)
+        worksheet.merge_range(row, 0, row, 1, "مندوب الشركه", bold_right)
         row += 1
-        worksheet.merge_range(row-1, 7, row-1, 11, "مندوب الهيئه", bold_center)
+        worksheet.merge_range(row-1, 8, row-1, 12, "مندوب الهيئه", bold_left)
 
         row += 4
         worksheet.merge_range(row, 2, row, 6, "يعتمد / ", bold_center)
