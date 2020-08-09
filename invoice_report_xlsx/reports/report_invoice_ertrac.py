@@ -43,7 +43,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         company_logo = self.env.user.company_id.logo
         imgdata = base64.b64decode(company_logo)
         image = io.BytesIO(imgdata)
-        worksheet.insert_image('H1', 'myimage.png', {'image_data': image,'x_scale': 1, 'y_scale': 0.5})
+        worksheet.insert_image('K1', 'myimage.png', {'image_data': image,'x_scale': 1, 'y_scale': 0.5})
         current = ''
         if invoice_ids.current :
             current = invoice_ids.current
@@ -69,7 +69,7 @@ class TaskErtracXlsxs(models.AbstractModel):
 #         worksheet.merge_range(11, 1, 11, 5, " %s %s هندسة القاهرة خلال شهر" % (fields.Date.today().strftime("%B"),
 #                                                                                fields.date.today().strftime("%Y")), bold_center)
         worksheet.write(12, 0, "هندسة 207")
-        worksheet.write(12, 7, "مطابع السكك الحديد 2240/1996/25000")
+        worksheet.write(12, 8, "مطابع السكك الحديد 2240/1996/25000")
         
         cell_format_header = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter',
                                                   'border': 1, 'fg_color': '#faf200'})
