@@ -182,7 +182,7 @@ class TaskErtracXlsxs(models.AbstractModel):
         col += 1
         worksheet.write(row, col, '' ,cell_format_total2)
         col += 1
-        worksheet.write(row, col, sum(c.total_km for c in tasks_total), cell_format_total2)
+        worksheet.write(row, col, math.floor(sum(c.total_km for c in tasks_total)), cell_format_total2)
         #line total
         row += 1
         worksheet.merge_range(row, 1, row , 5, "بإجمالي مسافة طالع , نازل = %s  كم" % sum(c.total_km for c in tasks_total) , bold_center)
