@@ -40,7 +40,7 @@ class TaskErtrackXlsx(models.AbstractModel):
         
         invoice = []
         for idx , task in enumerate(parent_tasks):
-            invoice = self.env['account.move'].search([('invoice_origin','=',task.sale_line_id.name)],limit = 1)
+            invoice = self.env['account.move'].search([('invoice_origin','=',task.sale_line_id.order_id.name)],limit = 1)
             if invoice:
                 break
                 
@@ -166,7 +166,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                 worksheet.merge_range(row, 2, row, last_col + 2,
                                       ' ', cell_format_header)
                 
-                invoice_per_task = self.env['account.move'].search([('invoice_origin','=',task.sale_line_id.name)],limit = 1)
+                invoice_per_task = self.env['account.move'].search([('invoice_origin','=',task.sale_line_id.order_id.name)],limit = 1)
 
                 # Sub Tasks Lines
                 for idxx, child_task in enumerate(task.child_ids):
