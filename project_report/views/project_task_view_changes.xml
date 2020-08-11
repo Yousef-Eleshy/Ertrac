@@ -82,9 +82,7 @@
                     <field name="task_header_id"
                            attrs="{'invisible':[('child_ids','=',[])],
                            'required':[('child_ids','!=',[])]}"/>
-                    <field name="report_description"
-                           attrs="{'invisible':[('child_ids','=',[])],
-                           'required':[('child_ids','!=',[])]}"/>
+                    <field name="report_description"/>
                 </xpath>
 
             </field>
