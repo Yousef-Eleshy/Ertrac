@@ -38,8 +38,14 @@ class TaskErtrackXlsx(models.AbstractModel):
         image = io.BytesIO(imgdata)
         worksheet.insert_image('M1', 'myimage.png', {'image_data': image,'x_scale': 1, 'y_scale': 0.5})
         
-
-        worksheet.merge_range(3, 3, 3, 7,'محضر حصر أعمال جاري (1)',bold_center)
+        invoice = []
+        for idx , task in enumerate(parent_tasks):
+            invoice = self.env['account.move'].search([('invoice_origin','=',task.sale_line_id.name)],limit = 1)
+            if invoice:
+                break
+                
+        
+        worksheet.merge_range(3, 3, 3, 7,'محضر حصر أعمال جاري (%s)'% invoice.current ,bold_center)
         worksheet.merge_range(4, 2, 4, 13, 'الأعمال التي قامت بتنفيذها الشركة المصرية لتجديد وصيانة خطوط السكك الحديدية',bold_center)
         worksheet.merge_range(5, 2, 5, 14, 'أعمال لتعديلات حوش محطة     بخط       قسم      التابع لإدارة هندسة السكك    شهر    2020',bold_center)
 #         worksheet.merge_range(6, 1, 6, 3, "%s محضر الحصر بتاريخ" % fields.Date.today(), bold)
@@ -86,7 +92,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                                       cell_format_header_wrap)
                 # Headers Part
                 worksheet.merge_range(row, col, row, last_col - 1,
-                                      ' النسب المئويه لبنود الأعمال طبقا" للعقد رقم 1 لسنة 2018/2017 %s' % (task.name)
+                                      ' النسب المئويه لبنود الأعمال طبقا" للعقد رقم 1 لسنة 2018/2017 %s' % (task.report_description)
                                       , cell_format_header)
                 row += 1
 #                 for y, line in enumerate(task.task_header_id.line_ids):
@@ -159,16 +165,18 @@ class TaskErtrackXlsx(models.AbstractModel):
                 worksheet.write(row, 1, task.name, cell_format_header)
                 worksheet.merge_range(row, 2, row, last_col + 2,
                                       ' ', cell_format_header)
+                
+                invoice_per_task = self.env['account.move'].search([('invoice_origin','=',task.sale_line_id.name)],limit = 1)
 
                 # Sub Tasks Lines
                 for idxx, child_task in enumerate(task.child_ids):
                     row += 1
                     col = 0
-                    worksheet.write(row, col, '#', cell_format_row)
+                    worksheet.write(row, col, invoice_per_task.current, cell_format_row)
                     col += 1
                     worksheet.write(row, col, child_task.name, cell_format_row)
                     col += 1
-                    worksheet.write(row, col,child_task.sale_line_id.product_uom, cell_format_row)
+                    worksheet.write(row, col,child_task.sale_line_id.product_uom.name, cell_format_row)
                     col += 1
                     worksheet.write(row, col, child_task.effective_hours, cell_format_row)
                     col += 1
@@ -237,7 +245,7 @@ class TaskErtrackXlsx(models.AbstractModel):
             col += 1
             worksheet.write(row, col, 'أﻷجمالى', cell_format_row)
             col += 1
-            worksheet.write(row, col, task.sale_line_id.product_uom , cell_format_row)
+            worksheet.write(row, col, task.sale_line_id.product_uom.name , cell_format_row)
             col += 1
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
             row += 1
