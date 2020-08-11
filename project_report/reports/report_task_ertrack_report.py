@@ -161,7 +161,7 @@ class TaskErtrackXlsx(models.AbstractModel):
 #                         worksheet.write(row, col+1+y, "%s %s%s" % (line.name, line.percent, "%")
 #                                           , cell_format_header)
                 # Main Task Name Line
-                worksheet.write(row, 0, idx+1, cell_format_header)
+#                 worksheet.write(row, 0, idx+1, cell_format_header)
                 worksheet.write(row, 1, task.name, cell_format_header)
                 worksheet.merge_range(row, 2, row, last_col + 2,
                                       ' ', cell_format_header)
@@ -173,7 +173,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                 for idxx, child_task in enumerate(task.child_ids):
                     row += 1
                     col = 0
-                    worksheet.write(row, col, invoice_per_task.current, cell_format_row)
+#                     worksheet.write(row, col, invoice.current, cell_format_row)
                     col += 1
                     worksheet.write(row, col, child_task.name, cell_format_row)
                     col += 1
@@ -242,7 +242,7 @@ class TaskErtrackXlsx(models.AbstractModel):
             # Final Total
             row += 1
             col = 0
-            worksheet.merge_range(row_task, col, row, col, invoice_per_task.current, cell_format_header_wrap)
+#             worksheet.write(row, col, invoice.current, cell_format_header_wrap)
             col += 1
             worksheet.write(row, col, 'الإجمالي', cell_format_row)
             col += 1
@@ -251,6 +251,7 @@ class TaskErtrackXlsx(models.AbstractModel):
             worksheet.write(row, col, sum(c.effective_hours for c in task.child_ids), cell_format_row)
             row += 1
 #         worksheet.merge_range(row, 0, row, 2, " = أعمال شحن ناتج الفج للسكك والمفاتيح بعربات برية ونقلها للمقالب العمومية ", bold_right)
+        worksheet.merge_range(8, 0, row, 0, invoice.current, cell_format_header_wrap)
         worksheet.merge_range(row, 10, row, 17, "طبقا لمحضر حصر الأعمال بالموقع والمرفق صورته", bold_right)
         # Footer
         row += 2
