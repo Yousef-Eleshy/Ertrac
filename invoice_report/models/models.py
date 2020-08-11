@@ -54,6 +54,11 @@ class SaleOrderLine(models.Model):
     
     rated = fields.Float(string = 'Rate',store = True , related='task_id.rate_tasks')
     
+    product_uom_qty = fields.Float('Quantity', digits=(12,4))
+    qty_delivered = fields.Float('Delivered', digits=(12,4))
+    qty_invoiced = fields.Float('Invoiced', digits=(12,4))
+
+    
     @api.depends('task_id.rate_tasks')
     def _fetch_rate_tasks(self):
         for line in self:
@@ -116,6 +121,9 @@ class AccountMoveLine(models.Model):
     rated_once_boolean = fields.Boolean(string='Rated Bool',store=True,default=False)
     allowed_amount = fields.Monetary(string='المبلغ المصرح بصرفه',store=True)
     disc = fields.Char(string='الملاحظات',store=True)
+    
+    quantity = fields.Float('Quantity', digits=(12,4))
+
 
     @api.model
     def _get_price_total_and_subtotal_model(self, price_unit, quantity, discount, currency, product, partner, taxes, move_type):
