@@ -167,6 +167,7 @@ class TaskErtrackXlsx(models.AbstractModel):
                                       ' ', cell_format_header)
                 
                 invoice_per_task = self.env['account.move'].search([('invoice_origin','=',task.sale_line_id.order_id.name)],limit = 1)
+                row_task = row
 
                 # Sub Tasks Lines
                 for idxx, child_task in enumerate(task.child_ids):
@@ -241,9 +242,9 @@ class TaskErtrackXlsx(models.AbstractModel):
             # Final Total
             row += 1
             col = 0
-            worksheet.write(row, col, '#', cell_format_row)
+            worksheet.merge_range(row_task, col, row, col, invoice_per_task.current, cell_format_header_wrap)
             col += 1
-            worksheet.write(row, col, 'أﻷجمالى', cell_format_row)
+            worksheet.write(row, col, 'الإجمالي', cell_format_row)
             col += 1
             worksheet.write(row, col, task.sale_line_id.product_uom.name , cell_format_row)
             col += 1
