@@ -113,7 +113,7 @@ class SaleOrderLine(models.Model):
             'rated': self.rated/100,
             'product_id': self.product_id.id,
             'product_uom_id': self.product_uom.id,
-            'quantity': self.qty_to_invoice,
+            'quantity': self.qty_delivered,
             'discount': self.discount,
             'price_unit': self.price_unit,
             'tax_ids': [(6, 0, self.tax_id.ids)],
