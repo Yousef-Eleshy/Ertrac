@@ -24,6 +24,8 @@
             </xpath>
             <xpath expr="/form/sheet/notebook/page[@id='timesheets_tab']/group[3]/group/field[@name='effective_hours']" position="replace">
                 <field name="effective_hours"/>
+                <field name="subtask_effective_hours"/>
+                <field name="total_hours_spent"/>
             </xpath>
         </field>
     </record>

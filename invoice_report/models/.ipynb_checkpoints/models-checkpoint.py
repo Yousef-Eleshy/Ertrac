@@ -11,6 +11,11 @@ class ProjectTask(models.Model):
 
     planned_hours = fields.Float(string='Quantity')
     effective_hours = fields.Float("Hours Spent", digits=(12,4), compute='_compute_effective_hours', compute_sudo=True, store=True, help="Computed using the sum of the task work done.")
+    subtask_effective_hours = fields.Float("Sub-tasks Hours Spent", digits=(12,4), compute='_compute_subtask_effective_hours', store=True, help="Sum of actually spent hours on the subtask(s)")
+    
+    total_hours_spent = fields.Float("Total Hours", digits=(12,4), compute='_compute_total_hours_spent', store=True, help="Computed as: Time Spent + Sub-tasks Hours.")
+
+
 
     rate_tasks = fields.Float(string = 'Rate Percentage')
     
