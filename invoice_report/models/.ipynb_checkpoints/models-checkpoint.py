@@ -10,8 +10,14 @@ class ProjectTask(models.Model):
     _inherit = 'project.task'
 
     planned_hours = fields.Float(string='Quantity')
+    effective_hours = fields.Float("Hours Spent", digits=(12,4), compute='_compute_effective_hours', compute_sudo=True, store=True, help="Computed using the sum of the task work done.")
 
     rate_tasks = fields.Float(string = 'Rate Percentage')
+    
+    @api.depends('timesheet_ids.unit_amount')
+    def _compute_effective_hours(self):
+        for task in self:
+            task.effective_hours = sum(task.timesheet_ids.mapped('unit_amount'))
 
 
 class AccountAnalyticLine(models.Model):
