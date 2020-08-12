@@ -24,7 +24,11 @@
             </xpath>
             <xpath expr="/form/sheet/notebook/page[@id='timesheets_tab']/group[3]/group/field[@name='effective_hours']" position="replace">
                 <field name="effective_hours"/>
+            </xpath>
+            <xpath expr="/form/sheet/notebook/page[@id='timesheets_tab']/group[3]/group/field[@name='subtask_effective_hours']" position="replace">
                 <field name="subtask_effective_hours"/>
+            </xpath>
+            <xpath expr="/form/sheet/notebook/page[@id='timesheets_tab']/group[3]/group/field[@name='total_hours_spent']" position="replace">
                 <field name="total_hours_spent"/>
             </xpath>
         </field>
