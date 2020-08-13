@@ -58,8 +58,28 @@ class HrAwardProfit(models.Model):
 			rec.total_amount = sum(l.amount for l in rec.line_ids)
 
 	total_amount = fields.Float("Total", compute=_get_total)
-    
-    
+
+	@api.onchange('award_value')
+	def generate_employee_ids(self):
+		emp_obj = self.env['hr.employee']
+		for rec in self:
+			if rec.work_location_id:
+				emps_list = rec.line_ids.mapped('employee_id.id')
+				emp_ids = emp_obj.search([('work_location_id', '=', rec.work_location_id.id)])
+				for emp_id in emp_ids:
+					if emp_id.id not in emps_list:
+						amount = 0.0
+						if rec.extra_type == 'award':
+							amount = rec.award_value
+						if rec.extra_type == 'profit' and emp_id.previous_wage:
+							amount = emp_id.previous_wage * rec.num_months
+						rec.line_ids.create({
+							'award_profit_id': rec.id,
+							'employee_id': emp_id.id,
+							'amount': amount
+
+						})
+
 	@api.onchange('work_location_id')
 	def generate_employee_ids(self):
 		emp_obj = self.env['hr.employee']
@@ -80,6 +100,15 @@ class HrAwardProfit(models.Model):
 							'amount': amount
 
 						})
+
+	@api.onchange('award_value','work_location_id')
+	def on_change_award_value(self):
+		for rec in self:
+			for line in rec.line_ids:
+				if rec.extra_type == 'award':
+				    line.amount = rec.award_value
+				    line.write({'amount': rec.award_value})
+
 
 	def write(self, vals):
 		for rec in self:

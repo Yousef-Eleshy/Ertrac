@@ -50,7 +50,7 @@
                                            domain="[('work_location_id','=',parent.work_location_id)]"/>
                                     <field name="extra_type" invisible="1"/>
                                     <field name="date" invisible="1"/>
-                                    <field name="amount" attrs="{'readonly':[('parent.extra_type','=','award')]}"/>
+                                    <field name="amount" attrs="{'readonly':[('parent.extra_type','=','award')]}" force_save="1"/>
                                     <field name="notes"/>
                                     <field name="state" readonly="1"/>
                                     <field name="payslip_id" readonly="1" optional="hide"
