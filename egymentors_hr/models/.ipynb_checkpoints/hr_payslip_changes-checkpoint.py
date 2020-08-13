@@ -118,6 +118,7 @@ class HrPayslipInherit(models.Model):
 	@api.onchange('hr_penalty_ids')
 	@api.depends('hr_penalty_ids.days_num')
 	def _get_total_penalty(self):
+		penalty_other = self.env.ref('egymentors_hr.penalty_other')
 		penalty_penalty = self.env.ref('egymentors_hr.penalty_penalty')
 		penalty_absence = self.env.ref('egymentors_hr.penalty_absence')
 		penalty_sick = self.env.ref('egymentors_hr.penalty_sick')
@@ -129,6 +130,8 @@ class HrPayslipInherit(models.Model):
 		for rec in self:
 			rec.total_penalties = sum(l.days_num for l in rec.hr_penalty_ids)
 			# Penalty
+			rec.total_penalties_other = sum(l.days_num for l in
+											  rec.hr_penalty_ids.filtered(lambda x: x.type_id == penalty_other))
 			rec.total_penalties_penalty = sum(l.days_num for l in
 											  rec.hr_penalty_ids.filtered(lambda x: x.type_id == penalty_penalty))
 			rec.total_penalties_absence = sum(l.days_num for l in
@@ -148,6 +151,7 @@ class HrPayslipInherit(models.Model):
 
 	total_penalties = fields.Float("Total Penalties", compute=_get_total_penalty)
 	total_penalties_sick = fields.Float("Sick", compute=_get_total_penalty)
+	total_penalties_other = fields.Float("Other", compute=_get_total_penalty)
 	total_penalties_penalty = fields.Float("Penalty", compute=_get_total_penalty)
 	total_penalties_absence = fields.Float("Absence", compute=_get_total_penalty)
 	total_penalty_unpaid = fields.Float("Unpaid", compute=_get_total_penalty)
