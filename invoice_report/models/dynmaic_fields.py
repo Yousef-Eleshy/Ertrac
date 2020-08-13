@@ -42,8 +42,8 @@ class AcountMove(models.Model):
         self.total_machine_rent = total_machine_rent
         self.total_line = total
         self.ten_perc = self.total_line * 0.10
-        self.pure = self.total_line - self.ten_perc
-        self.pure_amount = self.pure - self.total_machine_rent
+        self.pure = self.total_line + self.ten_perc
+        self.pure_amount = self.pure + self.total_machine_rent
         
         
             
