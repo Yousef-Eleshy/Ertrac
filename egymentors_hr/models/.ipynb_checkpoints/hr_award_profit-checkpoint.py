@@ -22,7 +22,7 @@ class HrAwardProfit(models.Model):
 	date = fields.Date("Date", default=fields.Date.today(),
 					   readonly=True, states={'draft': [('readonly', False)]})
 
-	all_employees = fields.Boolean("All", readonly=True, states={'draft': [('readonly', False)]})
+	all_employees = fields.Boolean("All", compute='generate_all_employees', store=True, readonly=True, states={'draft': [('readonly', False)]})
 
 	work_location_id = fields.Many2one('hr.location', "Work Location",
 									   readonly=True, states={'draft': [('readonly', False)]})
@@ -65,6 +65,24 @@ class HrAwardProfit(models.Model):
 			rec.total_amount = sum(l.amount for l in rec.line_ids)
 
 	total_amount = fields.Float("Total", compute=_get_total)
+
+	@api.onchange('all_employees')
+	def generate_all_employees(self):
+		emp_obj = self.env['hr.employee']
+		for rec in self:
+			emps_list = rec.line_ids.mapped('employee_id.id')
+			for emp_id in emp_obj:
+				if emp_id.id not in emps_list:
+					amount = 0.0
+					if rec.extra_type == 'award':
+						amount = rec.award_value
+					if rec.extra_type == 'profit' and emp_id.previous_wage:
+						amount = emp_id.previous_wage * rec.num_months
+					rec.line_ids.create({
+						'award_profit_id': rec.id,
+						'employee_id': emp_id.id,
+						'amount': amount
+					})
 
 	@api.onchange('award_value')
 	def generate_employee_ids(self):
