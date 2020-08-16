@@ -9,7 +9,7 @@
                     <button name="action_confirm" string="Confirm" class="oe_highlight"
                             groups="hr.group_hr_manager" states="draft" type="object"/>
                     <button name="action_print_report" string="Print" class="oe_highlight"
-                            type="object"/>
+                            states="confirm" type="object"/>
                     <button name="action_cancel" string="Cancel"
                             groups="hr.group_hr_manager" states="draft" type="object"/>
                     <button name="action_reset" string="Rest To Draft"
@@ -27,7 +27,12 @@
                     <group>
                         <group>
                             <field name="date"/>
-                            <field name="work_location_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="select_by" required="1"/>
+                            <field name="work_location_id" attrs="{'invisible':[('select_by','!=','work_loc')],
+                            'required':[('select_by','=','work_loc')], 'readonly':[('state','!=','draft')]}"/>
+
+                            <field name="all_employees" attrs="{'invisible':[('select_by','!=','all')],
+                            'required':[('select_by','=','all')], 'readonly':[('state','!=','draft')]}"/>
                         </group>
                         <group>
                             <field name="extra_type" required="1"/>
@@ -50,7 +55,7 @@
                                            domain="[('work_location_id','=',parent.work_location_id)]"/>
                                     <field name="extra_type" invisible="1"/>
                                     <field name="date" invisible="1"/>
-                                    <field name="amount" attrs="{'readonly':[('parent.extra_type','=','award')]}" force_save="1"/>
+                                    <field name="amount" attrs="{'readonly':[('parent.extra_type','=','award')]}"/>
                                     <field name="notes"/>
                                     <field name="state" readonly="1"/>
                                     <field name="payslip_id" readonly="1" optional="hide"

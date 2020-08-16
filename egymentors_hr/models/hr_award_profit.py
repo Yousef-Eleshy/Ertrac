@@ -15,8 +15,15 @@ class HrAwardProfit(models.Model):
 					   readonly=True, states={'draft': [('readonly', False)]})
 	extra_type = fields.Selection([('award', 'Award'), ('profit', 'Profit')], "Type"
 								  , readonly=True, states={'draft': [('readonly', False)]})
+
+	select_by = fields.Selection([('work_loc', 'Work Location'), ('all', 'All')], "Select By"
+								  , readonly=True, states={'draft': [('readonly', False)]})
+
 	date = fields.Date("Date", default=fields.Date.today(),
 					   readonly=True, states={'draft': [('readonly', False)]})
+
+	all_employees = fields.Boolean("All", readonly=True, states={'draft': [('readonly', False)]})
+
 	work_location_id = fields.Many2one('hr.location', "Work Location",
 									   readonly=True, states={'draft': [('readonly', False)]})
 	state = fields.Selection(_STATES, default='draft', string="Stage",
@@ -101,7 +108,7 @@ class HrAwardProfit(models.Model):
 
 						})
 
-	@api.onchange('award_value','work_location_id')
+	@api.onchange('award_value')
 	def on_change_award_value(self):
 		for rec in self:
 			for line in rec.line_ids:
