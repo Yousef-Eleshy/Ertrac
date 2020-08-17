@@ -22,10 +22,13 @@ class HrAwardProfit(models.Model):
 	date = fields.Date("Date", default=fields.Date.today(),
 					   readonly=True, states={'draft': [('readonly', False)]})
 
-	all_employees = fields.Boolean("All", compute='generate_all_employees', store=True, readonly=True, states={'draft': [('readonly', False)]})
-
 	work_location_id = fields.Many2one('hr.location', "Work Location",
 									   readonly=True, states={'draft': [('readonly', False)]})
+
+
+	ertrac_company = fields.Many2one('ertrac.company', "All Employees",
+								   readonly=True, states={'draft': [('readonly', False)]})
+
 	state = fields.Selection(_STATES, default='draft', string="Stage",
 							 track_visibility='onchange')
 	line_ids = fields.One2many('hr.award.profit.line', 'award_profit_id', "Lines",
@@ -66,23 +69,48 @@ class HrAwardProfit(models.Model):
 
 	total_amount = fields.Float("Total", compute=_get_total)
 
-	@api.onchange('all_employees')
-	def generate_all_employees(self):
+
+	@api.onchange('award_value')
+	def generate_all_employee_ids(self):
 		emp_obj = self.env['hr.employee']
 		for rec in self:
-			emps_list = rec.line_ids.mapped('employee_id.id')
-			for emp_id in emp_obj:
-				if emp_id.id not in emps_list:
-					amount = 0.0
-					if rec.extra_type == 'award':
-						amount = rec.award_value
-					if rec.extra_type == 'profit' and emp_id.previous_wage:
-						amount = emp_id.previous_wage * rec.num_months
-					rec.line_ids.create({
-						'award_profit_id': rec.id,
-						'employee_id': emp_id.id,
-						'amount': amount
-					})
+			if rec.ertrac_company:
+				emps_list = rec.line_ids.mapped('employee_id.id')
+				emp_ids = emp_obj.search([('ertrac_company', '=', rec.ertrac_company.id)])
+				for emp_id in emp_ids:
+					if emp_id.id not in emps_list:
+						amount = 0.0
+						if rec.extra_type == 'award':
+							amount = rec.award_value
+						if rec.extra_type == 'profit' and emp_id.previous_wage:
+							amount = emp_id.previous_wage * rec.num_months
+						rec.line_ids.create({
+							'award_profit_id': rec.id,
+							'employee_id': emp_id.id,
+							'amount': amount
+
+						})
+
+	@api.onchange('ertrac_company')
+	def generate_all_employee_ids(self):
+		emp_obj = self.env['hr.employee']
+		for rec in self:
+			if rec.ertrac_company:
+				emps_list = rec.line_ids.mapped('employee_id.id')
+				emp_ids = emp_obj.search([('ertrac_company', '=', rec.ertrac_company.id)])
+				for emp_id in emp_ids:
+					if emp_id.id not in emps_list:
+						amount = 0.0
+						if rec.extra_type == 'award':
+							amount = rec.award_value
+						if rec.extra_type == 'profit' and emp_id.previous_wage:
+							amount = emp_id.previous_wage * rec.num_months
+						rec.line_ids.create({
+							'award_profit_id': rec.id,
+							'employee_id': emp_id.id,
+							'amount': amount
+
+						})
 
 	@api.onchange('award_value')
 	def generate_employee_ids(self):
@@ -131,8 +159,8 @@ class HrAwardProfit(models.Model):
 		for rec in self:
 			for line in rec.line_ids:
 				if rec.extra_type == 'award':
-				    line.amount = rec.award_value
-				    line.write({'amount': rec.award_value})
+					line.amount = rec.award_value
+					line.write({'amount': rec.award_value})
 
 
 	def write(self, vals):
@@ -169,6 +197,8 @@ class HrBonusPenaltyLine(models.Model):
 			domain = []
 			if line.extra_type == 'bonus' and line.award_profit_id.work_location_id:
 				domain = [('work_location_id', '=', line.award_profit_id.work_location_id.id)]
+			if line.extra_type == 'bonus' and line.award_profit_id.ertrac_company:
+				domain = [('ertrac_company', '=', line.award_profit_id.ertrac_company.id)]
 			return {'domain': {'employee_id': domain}}
 
 	employee_id = fields.Many2one('hr.employee', "Employee", required=True, domain=_get_emp_domain)

@@ -31,7 +31,7 @@
                             <field name="work_location_id" attrs="{'invisible':[('select_by','!=','work_loc')],
                             'required':[('select_by','=','work_loc')], 'readonly':[('state','!=','draft')]}"/>
 
-                            <field name="all_employees" attrs="{'invisible':[('select_by','!=','all')],
+                            <field name="ertrac_company" attrs="{'invisible':[('select_by','!=','all')],
                             'required':[('select_by','=','all')], 'readonly':[('state','!=','draft')]}"/>
                         </group>
                         <group>
@@ -43,7 +43,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Employee's" name="lines">
+                        <page string="Employees" name="lines">
                             <field name="line_ids" attrs="{'readonly':[('state','!=','draft')]}">
                                 <tree editable="bottom"
                                       decoration-primary="state == 'draft'"
@@ -55,7 +55,7 @@
                                            domain="[('work_location_id','=',parent.work_location_id)]"/>
                                     <field name="extra_type" invisible="1"/>
                                     <field name="date" invisible="1"/>
-                                    <field name="amount" attrs="{'readonly':[('parent.extra_type','=','award')]}"/>
+                                    <field name="amount" attrs="{'readonly':[('parent.extra_type','=','award')]}" force_save="1"/>
                                     <field name="notes"/>
                                     <field name="state" readonly="1"/>
                                     <field name="payslip_id" readonly="1" optional="hide"
