@@ -277,7 +277,10 @@ class HrPayslipInherit(models.Model):
 class HrPayslipRun(models.Model):
 	_inherit = 'hr.payslip.run'
 
-	work_location_id = fields.Many2one('hr.location', "Work Location", required=True)
+	all_employees = fields.Boolean('All Employees', default=False)
+
+	work_location_id = fields.Many2one('hr.location', "Work Location")
+	company_id = fields.Many2one('res.company', string='Company')
 	department_id = fields.Many2one('hr.department', "Department")
 
 # Ahmed Salama Code End.

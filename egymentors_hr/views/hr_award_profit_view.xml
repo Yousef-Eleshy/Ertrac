@@ -31,7 +31,7 @@
                             <field name="work_location_id" attrs="{'invisible':[('select_by','!=','work_loc')],
                             'required':[('select_by','=','work_loc')], 'readonly':[('state','!=','draft')]}"/>
 
-                            <field name="ertrac_company" attrs="{'invisible':[('select_by','!=','all')],
+                            <field name="company_id" attrs="{'invisible':[('select_by','!=','all')],
                             'required':[('select_by','=','all')], 'readonly':[('state','!=','draft')]}"/>
                         </group>
                         <group>
