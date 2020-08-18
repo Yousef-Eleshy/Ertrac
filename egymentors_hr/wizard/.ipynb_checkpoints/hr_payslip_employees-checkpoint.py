@@ -14,6 +14,8 @@ class HrPayslipEmployeesInherit(models.TransientModel):
         active_id = self.env['hr.payslip.run'].browse(self.env.context.get('active_id'))
         if active_id and active_id.work_location_id:
             domain.append(('work_location_id', '=', active_id.work_location_id.id))
+        if active_id and active_id.all_employees:
+            domain.append(('company_id', '=', active_id.company_id.id))
         if active_id and active_id.department_id:
             domain.append(('department_id', '=', active_id.department_id.id))
         return domain
