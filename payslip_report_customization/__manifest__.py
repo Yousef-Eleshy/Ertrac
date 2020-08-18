@@ -24,6 +24,7 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        #'reports/reports.xml',
         'reports/payslip_report_inherit.xml',
     ],
     # only loaded in demonstration mode
