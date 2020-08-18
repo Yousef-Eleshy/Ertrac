@@ -35,7 +35,9 @@
                 </page>
             </xpath>
             <xpath expr="/form/sheet/group/group[1]/field[@name='work_location']" position="replace">
-                 <field name="ertrac_company"/>
+                <!--
+                <field name="ertrac_company"/>
+                -->
 				<field name="work_location_id"/>
                  <field name="location_type" widget="radio" options="{'horizontal': true}"/>
             </xpath>

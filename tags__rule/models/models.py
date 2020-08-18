@@ -103,7 +103,7 @@ class HrEmployee(models.Model):
     tax_base = fields.Float(string='Tax Base', default=0)
     work_location_id = fields.Many2one('hr.location', 'Work Location Ertrac')
 
-    ertrac_company = fields.Many2one('ertrac.company', 'Ertrac Company')
+#     ertrac_company = fields.Many2one('ertrac.company', 'Ertrac Company')
 
 #     def _default_ertrac_company(self):
 #         return self.env['ertrac.company'].search([('company_name', '=', 'Ertrac')], limit=1).id
