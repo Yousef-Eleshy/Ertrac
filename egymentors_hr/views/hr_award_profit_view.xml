@@ -9,7 +9,7 @@
                     <button name="action_confirm" string="Confirm" class="oe_highlight"
                             groups="hr.group_hr_manager" states="draft" type="object"/>
                     <button name="action_print_report" string="Print" class="oe_highlight"
-                            states="confirm" type="object"/>
+                            type="object"/>
                     <button name="action_cancel" string="Cancel"
                             groups="hr.group_hr_manager" states="draft" type="object"/>
                     <button name="action_reset" string="Rest To Draft"
