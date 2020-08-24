@@ -12,11 +12,12 @@
             <field name="margin_right">7</field>
             <field name="header_line" eval="False" />
             <field name="header_spacing">30</field>
-            <field name="dpi">100</field>
+            <field name="dpi">110</field>
         </record>
         
         <report
             id="action_report_payslip"
+            menu="False"
             model="hr.payslip"
             string="Payslip"
             report_type="qweb-pdf"
