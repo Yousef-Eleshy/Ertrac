@@ -29,7 +29,7 @@
     'description': """
 """,
     'version': '10.0',
-    'depends': ['base', 'hr', 'tags__rule', 'hr_payroll_account'],
+    'depends': ['report_xlsx', 'hr', 'tags__rule', 'hr_payroll_account'],
     'data': [
         'data/hr_bonus_penalty_data.xml',
         'data/hr_grade_date.xml',
@@ -50,6 +50,7 @@
         'views/hr_contract_view_changes.xml',
         'views/hr_trans_allowance_view.xml',
         'views/hr_award_profit_view.xml',
+        'views/hr_salary_rule_view_changes.xml',
 
         'reports/reports.xml',
         'views/report_hr_employee_promotion.xml',
@@ -57,6 +58,7 @@
         'views/report_hr_pay_raise.xml',
         'views/report_hr_trans_allowance.xml',
         'views/report_hr_award_profit.xml',
+        'views/report_payslip_salary_rules_pdf.xml',
     ],
     'installable': True,
     'application': True,

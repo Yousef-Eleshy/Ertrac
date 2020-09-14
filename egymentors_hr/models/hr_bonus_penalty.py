@@ -170,7 +170,7 @@ class HrBonusPenalty(models.Model):
 	total_bonus_transportation = fields.Float("Transportation", compute=_get_total_bonus_penalty)
 	total_bonus_travel = fields.Float("Travel", compute=_get_total_bonus_penalty)
 	total_bonus_additional = fields.Float("Additional", compute=_get_total_bonus_penalty)
-	total_bonus_feeding = fields.Float("Additional", compute=_get_total_bonus_penalty)
+	total_bonus_feeding = fields.Float("Feeding", compute=_get_total_bonus_penalty)
 	
 	total_penalties = fields.Float("Total Penalties", compute=_get_total_bonus_penalty)
 	total_penalties_sick = fields.Float("Sick", compute=_get_total_bonus_penalty)
