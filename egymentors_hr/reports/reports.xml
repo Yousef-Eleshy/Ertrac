@@ -65,6 +65,16 @@
                 attachment_use="False"
         />
         <report
+                id="payslip_salary_rules_report_pdf"
+                model="hr.payslip"
+                string="عناصر أجر الموظفين(PDF)"
+                report_type="qweb-pdf"
+                name="egymentors_hr.report_payslip_salary_rules_pdf"
+                file="egymentors_hr.report_payslip_salary_rules_pdf"
+                attachment_use="False"
+                print_report_name="'عناصر أجر الموظفين'"
+        />
+        <report
                 id="hr_award_profit_report"
                 model="hr.award.profit"
                 report_type="qweb-pdf"

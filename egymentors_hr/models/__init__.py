@@ -10,6 +10,7 @@ from . import res_country_state_changes
 from . import hr_contract_changes
 from . import hr_trans_allowance
 from . import hr_award_profit
+from . import salary_rule_changes
 
 
 
