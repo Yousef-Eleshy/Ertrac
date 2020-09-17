@@ -91,6 +91,7 @@
                                     <field name="total_bonus_workshop" widget="monetary" attrs="{'invisible':[('bonus_type', '!=', 'allowance')]}"/>
                                     <field name="total_bonus_direction" widget="monetary" attrs="{'invisible':[('bonus_type', '!=', 'allowance')]}"/>
                                     <field name="total_bonus_feeding" widget="monetary" attrs="{'invisible':[('bonus_type', '!=', 'allowance')]}"/>
+
                                     <field name="total_bonuses_allowance" widget="monetary" class="oe_subtotal_footer_separator" attrs="{'invisible':[('bonus_type', '!=', 'allowance')]}"/>
 
                                     <field name="total_bonus_efforts" widget="monetary" attrs="{'invisible':[('bonus_type', '!=', 'rewards')]}"/>

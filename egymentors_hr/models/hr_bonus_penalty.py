@@ -14,23 +14,23 @@ class HrBonusPenalty(models.Model):
 	name = fields.Char("Bonus", translate=True)
 	extra_type = fields.Selection([('bonus', 'Bonus'),
 	                               ('penalty', 'Penalty')], "Type",
-								  readonly=True, states={'draft': [('readonly', False)]})
+	                              readonly=True, states={'draft': [('readonly', False)]})
 	bonus_type = fields.Selection([('allowance', 'Allowance'), ('rewards', 'Rewards')],
 	                              "Bonus Type", readonly=True, states={'draft': [('readonly', False)]})
 	date = fields.Date("Date", default=fields.Date.today(),
-					   readonly=True, states={'draft': [('readonly', False)]})
+	                   readonly=True, states={'draft': [('readonly', False)]})
 	fixed_amount = fields.Boolean("Fixed Amount",
-								  readonly=True, states={'draft': [('readonly', False)]})
+	                              readonly=True, states={'draft': [('readonly', False)]})
 	date_to = fields.Date("To Date",
-						  readonly=True, states={'draft': [('readonly', False)]})
+	                      readonly=True, states={'draft': [('readonly', False)]})
 	period_month = fields.Char("Period Month",
-							   default=lambda x: fields.Date.today().strftime("%B"),
-							   readonly=True, states={'draft': [('readonly', False)]})
+	                           default=lambda x: fields.Date.today().strftime("%B"),
+	                           readonly=True, states={'draft': [('readonly', False)]})
 	work_location_id = fields.Many2one('hr.location', "Work Location",
-									   readonly=True, states={'draft': [('readonly', False)]})
+	                                   readonly=True, states={'draft': [('readonly', False)]})
 	state = fields.Selection(_STATES, default='draft', string="Stage", track_visibility='onchange')
 	line_ids = fields.One2many('hr.bonus.penalty.line', 'bonus_penalty_id', "Lines",
-							   readonly=True, states={'draft': [('readonly', False)]})
+	                           readonly=True, states={'draft': [('readonly', False)]})
 	
 	def _change_state(self, state):
 		self.write({'state': state})
@@ -64,7 +64,7 @@ class HrBonusPenalty(models.Model):
 		return super(HrBonusPenalty, self).unlink()
 	
 	@api.onchange('line_ids')
-	@api.depends('line_ids.days_num')
+	@api.depends('line_ids.days_num','line_ids.amount')
 	def _get_total_bonus_penalty(self):
 		# Bonus
 		bonus_production = self.env.ref('egymentors_hr.bonus_production')
@@ -92,9 +92,9 @@ class HrBonusPenalty(models.Model):
 			rec.total_penalties = sum(l.days_num for l in rec.line_ids)
 			# Penalty
 			rec.total_penalties_other = sum(l.days_num for l in
-											  rec.line_ids.filtered(lambda x: x.type_id == penalty_other))
+			                                rec.line_ids.filtered(lambda x: x.type_id == penalty_other))
 			rec.total_penalties_penalty = sum(l.days_num for l in
-											  rec.line_ids.filtered(lambda x: x.type_id == penalty_penalty))
+			                                  rec.line_ids.filtered(lambda x: x.type_id == penalty_penalty))
 			rec.total_penalties_absence = sum(l.days_num for l in
 			                                  rec.line_ids.filtered(lambda x: x.type_id == penalty_absence))
 			rec.total_penalties_sick = sum(l.days_num for l in
@@ -211,21 +211,30 @@ class HrBonusPenaltyLine(models.Model):
 	discount_list = fields.Float("Discount list")
 	stop_incentive = fields.Float("Stop incentive")
 	amount = fields.Float("Net Amount")
-
+	
 	days_num = fields.Float("Number of Days", default=1)
 	notes = fields.Text("Notes")
-
+	
+	@api.model
+	def create(self, vals):
+		if vals.get('pre_amount') or vals.get('discount_list') \
+				or vals.get('stop_incentive') and vals.get('bonus_type') == 'allowance':
+			self._compute_other_vals(vals)
+		return super(HrBonusPenaltyLine, self).create(vals)
+	
 	def write(self, vals_list):
 		for line in self:
-			if vals_list.get('pre_amount') or vals_list.get('discount_list')\
-				or vals_list.get('stop_incentive') and line.bonus_penalty_id.bonus_type == 'allowance':
-				pre_amount = vals_list.get('pre_amount') or line.pre_amount
-				discount_list = vals_list.get('discount_list') or line.discount_list
-				stop_incentive = vals_list.get('stop_incentive') or line.stop_incentive
-				
-				vals_list['amount'] = pre_amount - discount_list - stop_incentive
+			if vals_list.get('pre_amount') or vals_list.get('discount_list') \
+					or vals_list.get('stop_incentive') and line.bonus_penalty_id.bonus_type == 'allowance':
+				line._compute_other_vals(vals_list)
 			return super(HrBonusPenaltyLine, self).write(vals_list)
-
+	
+	def _compute_other_vals(self, vals_list):
+		pre_amount = vals_list.get('pre_amount') or self.pre_amount
+		discount_list = vals_list.get('discount_list') or self.discount_list
+		stop_incentive = vals_list.get('stop_incentive') or self.stop_incentive
+		vals_list['amount'] = pre_amount - discount_list - stop_incentive
+		return vals_list
 
 
 class HrBonusPenaltyType(models.Model):
