@@ -15,7 +15,7 @@
     'author'    : "Konsaltén Indonesia (Consult10 Indonesia)",
     'website'   : "www.consult10indonesia.com",
     'license'   : 'AGPL-3',
-    'depends'   : ['base', 'c10i_base', 'kli_base', 'stock', 'c10i_purchase', 'c10i_purchase_request'],
+    'depends'   : ['base', 'kli_base', 'stock', 'purchase', 'purchase_request'],
     'summary'   : """
                         KLI Purchase Module - C10i
                     """,
