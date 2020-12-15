@@ -10,7 +10,7 @@
 
 {
     'name': 'Invoice Advance',
-    'depends': ['account', 'c10i_account'],
+    'depends': ['account'],
     'description': """
 ===========================
  Invoice Advance
