@@ -10,7 +10,7 @@
 
 {
     'name': 'KLI Weightbridge Data Converter',
-    'depends': ['base','stock','kli_purchase','sale', 'c10i_account_invoice_advance'],
+    'depends': ['c10i_base','c10i_stock','kli_purchase','sale', 'c10i_account_invoice_advance'],
     'description': """
         Special Tools to collect data from Sampit Weightbridge 
         and convert it into Odoo's Data Structure
